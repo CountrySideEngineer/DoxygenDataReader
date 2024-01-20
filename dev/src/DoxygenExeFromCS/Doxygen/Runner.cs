@@ -25,14 +25,13 @@ namespace Doxygen
         /// </summary>
         public void Run()
         {
-            string curDir = Directory.GetCurrentDirectory();
-            string doxyPath = curDir + @"\" + Config;
+            var config = Doxygen.Config.GetConfig();
 
-            var procStartInfo = new ProcessStartInfo(Path)
+            var procStartInfo = new ProcessStartInfo(config.ExePath)
             {
                 ArgumentList =
                 {
-                    doxyPath
+                    config.Doxyfile
                 }
             };
             Process? proc = Process.Start(procStartInfo);
