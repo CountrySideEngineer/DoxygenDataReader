@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Doxygen.DB.Table
+{
+    [Table("contains")]
+    public class ContainsModel
+    {
+        [Key]
+        [Column("rowid")]
+        public int RowId { get; set; }
+
+        [Column("inner_rowid")]
+        public int InnerRowId { get; set; }
+
+        [Column("outer_rowid")]
+        public int OuterRowId { get; set; }
+    }
+}
