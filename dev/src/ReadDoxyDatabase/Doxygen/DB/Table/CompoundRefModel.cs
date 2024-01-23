@@ -10,15 +10,17 @@ using System.Threading.Tasks;
 namespace Doxygen.DB.Table
 {
     [Table("compoundref")]
-    public class CompoundRedModel
+    public class CompoundRefModel
     {
         [Key]
         [Column("rowid")]
         public int Rowid { get; set; }
 
+        [ForeignKey("rowid")]
         [Column("base_rowid")]
         public int BaseRowId { get; set; }
 
+        [ForeignKey("rowid")]
         [Column("derived_rowid")]
         public int DerivedRowId { get; set; }
 
@@ -27,5 +29,7 @@ namespace Doxygen.DB.Table
 
         [Column("virt")]
         public int Virt { get; set; }
-    }
+
+        public CompoundDefModel CompoundDef { get; set; }
+    } 
 }
