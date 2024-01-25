@@ -34,6 +34,7 @@ namespace Doxygen.DB.Table
         [Column("defval")]
         public string DefVal { get; set; }
 
+        [Column("briefdescription")]
         public string BriefDescription { get; set; }
     }
 }
