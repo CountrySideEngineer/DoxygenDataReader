@@ -29,9 +29,9 @@ namespace Doxygen.DB.Table
         public int Virt { get; set; }
 
         [ForeignKey(nameof(BaseRowId))]
-        public CompoundDefModel CompoundDefModelBase { get; set; } = null;
+        public CompoundDefModel? CompoundDefModelBase { get; set; } = null;
 
         [ForeignKey(nameof(DerivedRowId))]
-        public CompoundDefModel CompoundDefModelDerived { get; set; } = null;
+        public CompoundDefModel? CompoundDefModelDerived { get; set; } = null;
     }
 }
