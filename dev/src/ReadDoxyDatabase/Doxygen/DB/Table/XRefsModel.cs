@@ -23,5 +23,11 @@ namespace Doxygen.DB.Table
 
         [Column("context")]
         public string Context { get; set; } = string.Empty;
+
+        [ForeignKey(nameof(SrcRowId))]
+        public RefIdModel? RefIdModelSrc { get; set; }
+
+        [ForeignKey(nameof(DstRowId))]
+        public RefIdModel? RefIdModelDst { get; set; }
     }
 }

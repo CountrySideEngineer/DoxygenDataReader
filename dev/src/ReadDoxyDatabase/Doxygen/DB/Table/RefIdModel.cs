@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Doxygen.DB.Table
 {
     [Table("refid")]
-    internal class RefIdModel
+    public class RefIdModel
     {
         [Key]
         [Column("rowid")]
