@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Doxygen.DB.Table
+{
+    [Table("refid")]
+    internal class RefIdModel
+    {
+        [Key]
+        [Column("rowid")]
+        public int RowId { get; set; }
+
+        [Column("refid")]
+        public string RefId { get; set; } = string.Empty;
+    }
+}
