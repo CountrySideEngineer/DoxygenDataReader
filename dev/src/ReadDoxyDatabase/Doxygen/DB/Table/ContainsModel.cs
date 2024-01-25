@@ -22,9 +22,9 @@ namespace Doxygen.DB.Table
         public int OuterRowId { get; set; }
 
         [ForeignKey(nameof(InnerRowId))]
-        public CompoundDefModel CompoundDefInner { get; set; }
+        public CompoundDefModel? CompoundDefInner { get; set; }
 
         [ForeignKey(nameof(OuterRowId))]
-        public CompoundDefModel CompoundDefOuter { get; set; }
+        public CompoundDefModel? CompoundDefOuter { get; set; }
     }
 }
