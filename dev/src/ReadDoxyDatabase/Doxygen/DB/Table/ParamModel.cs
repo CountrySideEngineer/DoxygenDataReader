@@ -17,24 +17,24 @@ namespace Doxygen.DB.Table
         public int RowId { get; set; }
 
         [Column("attributes")]
-        public string Attributes { get; set; }
+        public string Attributes { get; set; } = string.Empty;
 
         [Column("type")]
-        public string Type { get; set; }
+        public string Type { get; set; } = string.Empty;
 
         [Column("declname")]
-        public string DeclName { get; set; }
+        public string DeclName { get; set; } = string.Empty;
 
         [Column("defname")]
-        public string DefName { get; set; }
+        public string DefName { get; set; } = string.Empty;
 
         [Column("array")]
-        public string Array { get; set; }
+        public string Array { get; set; } = string.Empty;
 
         [Column("defval")]
-        public string DefVal { get; set; }
+        public string DefVal { get; set; } = string.Empty;
 
         [Column("briefdescription")]
-        public string BriefDescription { get; set; }
+        public string BriefDescription { get; set; } = string.Empty;
     }
 }
