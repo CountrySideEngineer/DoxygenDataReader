@@ -16,15 +16,19 @@ namespace Doxygen.DB.Table
         [Column("rowid")]
         public int Rowid { get; set; }
 
+        [Required]
         [Column("base_rowid")]
         public int BaseRowId { get; set; }
 
+        [Required]
         [Column("derived_rowid")]
         public int DerivedRowId { get; set; }
 
+        [Required]
         [Column("prot")]
         public int Prot { get; set; }
 
+        [Required]
         [Column("virt")]
         public int Virt { get; set; }
 
