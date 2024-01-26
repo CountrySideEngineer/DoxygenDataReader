@@ -15,9 +15,11 @@ namespace Doxygen.DB.Table
         [Column("rowid")]
         public int RowId { get; set; }
 
+        [Required]
         [Column("inner_rowid")]
         public int InnerRowId { get; set; }
 
+        [Required]
         [Column("outer_rowid")]
         public int OuterRowId { get; set; }
 
