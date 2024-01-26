@@ -19,6 +19,7 @@ namespace Doxygen.DB.Table
         [Column("rowid")]
         public int RowId { get; set; }
 
+        [Required]
         [Column("name")]
         public string Name { get; set; } = string.Empty;
 
@@ -154,6 +155,7 @@ namespace Doxygen.DB.Table
         [Column("raisable")]
         public int Raisable { get; set; } = 0;
 
+        [Required]
         [Column("kind")]
         public string Kind { get; set; } = string.Empty;
 
@@ -166,12 +168,15 @@ namespace Doxygen.DB.Table
         [Column("bodyfile_id")]
         public int BodyFileId { get; set; } = 0;
 
+        [Required]
         [Column("file_id")]
         public int FileId { get; set; } = 0;
 
+        [Required]
         [Column("line")]
         public int Line { get; set; } = 0;
 
+        [Required]
         [Column("column")]
         public int Column { get; set; } = 0;
 
