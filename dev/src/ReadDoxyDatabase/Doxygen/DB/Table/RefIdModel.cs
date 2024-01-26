@@ -15,6 +15,7 @@ namespace Doxygen.DB.Table
         [Column("rowid")]
         public int RowId { get; set; }
 
+        [Required]
         [Column("refid")]
         public string RefId { get; set; } = string.Empty;
     }
