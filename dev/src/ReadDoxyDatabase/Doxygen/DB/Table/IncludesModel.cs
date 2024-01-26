@@ -15,12 +15,15 @@ namespace Doxygen.DB.Table
         [Column("rowid")]
         public int RowId { get; set; }
 
+        [Required]
         [Column("local")]
         public int Local { get; set; }
 
+        [Required]
         [Column("src_id")]
         public int SrcId { get; set; }
 
+        [Required]
         [Column("dst_id")]
         public int DstId { get; set; }
     }
