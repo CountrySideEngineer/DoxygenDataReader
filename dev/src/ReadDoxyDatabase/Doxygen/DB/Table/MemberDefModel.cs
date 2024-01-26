@@ -155,7 +155,7 @@ namespace Doxygen.DB.Table
         public int Raisable { get; set; } = 0;
 
         [Column("kind")]
-        public int Kind { get; set; } = 0;
+        public string Kind { get; set; } = string.Empty;
 
         [Column("bodystart")]
         public int BodyStart { get; set; } = 0;
