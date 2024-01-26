@@ -15,15 +15,19 @@ namespace Doxygen.DB.Table
         [Column("rowid")]
         public int RowId { get; set; }
 
+        [Required]
         [Column("type")]
         public int Type { get; set; }
 
+        [Required]
         [Column("local")]
         public int Local { get; set; }
 
+        [Required]
         [Column("found")]
         public int Found { get; set; }
 
+        [Required]
         [Column("name")]
         public string Name { get; set; } = string.Empty;
 
