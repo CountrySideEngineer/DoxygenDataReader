@@ -16,9 +16,11 @@ namespace Doxygen.DB.Table
         [Column("rowid")]
         public int RowId { get; set; }
 
+        [Required]
         [Column("memberdef_id")]
         public int MemberDefId { get; set; }
 
+        [Required]
         [Column("param_id")]
         public int ParamId { get; set; }
     }
