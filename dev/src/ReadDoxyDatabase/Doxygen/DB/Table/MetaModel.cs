@@ -32,9 +32,9 @@ namespace Doxygen.DB.Table
         public string ProjectName { get; set; } = string.Empty;
 
         [Column("project_number")]
-        public string ProjectNumber { get; set; } = string.Empty;
+        public string? ProjectNumber { get; set; } = string.Empty;
 
         [Column("project brief")]
-        public string ProjectBrief { get; set; } = string.Empty;
+        public string? ProjectBrief { get; set; } = string.Empty;
     }
 }

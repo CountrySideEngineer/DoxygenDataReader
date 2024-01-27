@@ -19,15 +19,15 @@ namespace Doxygen.DB.Table
         [Column("name")]
         public string Name { get; set; } = string.Empty;
 
-        [Column("type")]
-        public string Title { get; set; } = string.Empty;
+        [Column("title")]
+        public string? Title { get; set; } = string.Empty;
 
         [Required]
         [Column("kind")]
         public string Kind { get; set; } = string.Empty;
 
         [Column("prot")]
-        public int Prot { get; set; } = 0;
+        public int? Prot { get; set; } = 0;
 
         [Required]
         [Column("file_id")]
@@ -42,13 +42,13 @@ namespace Doxygen.DB.Table
         public int Column { get; set; } = 0;
 
         [Column("header_id")]
-        public int HeaderId { get; set; } = 0;
+        public int? HeaderId { get; set; } = 0;
 
         [Column("detaileddescription")]
-        public string DetaildDescription { get; set; } = string.Empty;
+        public string? DetaildDescription { get; set; } = string.Empty;
 
         [Column("briefdescription")]
-        public string BriefDescription { get; set; } = string.Empty;
+        public string? BriefDescription { get; set; } = string.Empty;
 
         [ForeignKey(nameof(FileId))]
         public PathModel? PathModelFile { get; set; } = null;

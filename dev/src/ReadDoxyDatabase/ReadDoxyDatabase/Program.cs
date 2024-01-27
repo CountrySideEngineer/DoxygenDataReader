@@ -20,4 +20,15 @@ using (var dbContext = new DoxygenDbContext())
             $"name = {entity.Name}"
             );
     }
+
+    var files = dbContext.CompoundDefModels;
+
+    foreach (var file in files)
+    {
+        Console.WriteLine(
+            $"rowid = {file.RowId, 4:G}, " +
+            $"name = {file.Name}, " +
+            $"title = {file.Title} "
+            );
+    }
 }

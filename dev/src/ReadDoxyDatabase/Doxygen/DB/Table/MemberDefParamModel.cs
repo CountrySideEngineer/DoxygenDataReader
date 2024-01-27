@@ -24,7 +24,7 @@ namespace Doxygen.DB.Table
         [Column("param_id")]
         public int ParamId { get; set; }
 
-        [ForeignKey(nameof(MemberDefModelId))]
+        [ForeignKey(nameof(MemberDefId))]
         public MemberDefModel? MemberDefModelId { get; set; } = null;
 
         [ForeignKey(nameof(ParamId))]
