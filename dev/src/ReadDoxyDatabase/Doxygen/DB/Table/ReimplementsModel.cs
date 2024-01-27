@@ -22,5 +22,11 @@ namespace Doxygen.DB.Table
         [Required]
         [Column("reimplemented_rowid")]
         public int ReimplementedRowId { get; set; }
+
+        [ForeignKey(nameof(MemberDefRowId))]
+        public MemberDefModel? MemberDefModelMemberDef { get; set; }
+
+        [ForeignKey(nameof(ReimplementedRowId))]
+        public MemberDefModel? MemberDefModelReimplemented { get; set; }
     }
 }
