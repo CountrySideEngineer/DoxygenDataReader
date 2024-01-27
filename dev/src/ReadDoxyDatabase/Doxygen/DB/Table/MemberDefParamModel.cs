@@ -23,5 +23,11 @@ namespace Doxygen.DB.Table
         [Required]
         [Column("param_id")]
         public int ParamId { get; set; }
+
+        [ForeignKey(nameof(MemberDefModelId))]
+        public MemberDefModel? MemberDefModelId { get; set; } = null;
+
+        [ForeignKey(nameof(ParamId))]
+        public ParamModel? ParamModelId { get; set; } = null;
     }
 }
