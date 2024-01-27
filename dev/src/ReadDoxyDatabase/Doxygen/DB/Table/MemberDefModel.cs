@@ -188,5 +188,11 @@ namespace Doxygen.DB.Table
 
         [Column("inbodydescription")]
         public string InbodyDescription { get; set;} = string.Empty;
+
+        [ForeignKey(nameof(BodyFileId))]
+        public PathModel? PathModelBodyFileId { get; set; } = null;
+
+        [ForeignKey(nameof(FileId))]
+        public PathModel? PathModelFileId { get; set; } = null;
     }
 }
