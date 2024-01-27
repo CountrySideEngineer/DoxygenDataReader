@@ -30,8 +30,8 @@ namespace Doxygen.DB.Table
         public int Prot { get; set; } = 0;
 
         [Required]
-        [Column("field_id")]
-        public int FiedId { get; set; } = 0;
+        [Column("file_id")]
+        public int FileId { get; set; } = 0;
 
         [Required]
         [Column("line")]
@@ -49,5 +49,11 @@ namespace Doxygen.DB.Table
 
         [Column("briefdescription")]
         public string BriefDescription { get; set; } = string.Empty;
+
+        [ForeignKey(nameof(FileId))]
+        public PathModel? PathModelFile { get; set; } = null;
+
+        [ForeignKey(nameof(HeaderId))]
+        public PathModel? PathModelHeader { get; set; } = null;
     }
 }
