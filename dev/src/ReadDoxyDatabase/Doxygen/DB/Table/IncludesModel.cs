@@ -26,5 +26,11 @@ namespace Doxygen.DB.Table
         [Required]
         [Column("dst_id")]
         public int DstId { get; set; }
+
+        [ForeignKey(nameof(SrcId))]
+        public PathModel? PathModelSrc { get; set; }
+
+        [ForeignKey(nameof(DstId))]
+        public PathModel? PathModelDst { get; set; }
     }
 }
