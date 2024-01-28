@@ -7,16 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DB\Connection\IDBConnector.cs" />
+    <Compile Remove="DB\Connection\**" />
+    <EmbeddedResource Remove="DB\Connection\**" />
+    <None Remove="DB\Connection\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DB\Connection\" />
   </ItemGroup>
 
 </Project>
