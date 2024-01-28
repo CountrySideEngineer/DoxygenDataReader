@@ -11,6 +11,10 @@ namespace Doxygen.DAO
 {
     public abstract class AFileDao
     {
+        /// <summary>
+        /// Abstract method which returns file extension.
+        /// </summary>
+        /// <returns>File extension.</returns>
         protected abstract string GetFileExtension();
 
         /// <summary>
