@@ -14,6 +14,6 @@ var files = dao.GetAll();
 foreach (var fileItem in files)
 {
     Console.WriteLine($"ID = {fileItem.Id, 4} " +
-        $"NAME:{fileItem.Name, -32}" +
+        $"NAME:{fileItem.Name, -24}" +
         $"PATH:{fileItem.Path}");
 }
