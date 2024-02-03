@@ -26,7 +26,7 @@ namespace Doxygen.DTO
         /// <summary>
         /// Name of parameter
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Data type of parameter.
