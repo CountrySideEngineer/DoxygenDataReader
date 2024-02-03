@@ -34,6 +34,7 @@ namespace Doxygen.DAO
                     {
                         Id = memberDefParam.RowId,
                         Name = memberDefModel.Name,
+                        Definition = memberDefModel.Definition,
                         Type = memberDefModel.Type,
                         Kind = memberDefModel.Kind,
                     }
@@ -47,7 +48,8 @@ namespace Doxygen.DAO
                     {
                         Id = item.Id,
                         Name = item.Name,
-                        Type = item.Type
+                        Type = item.Type,
+                        Definition = item.Definition
                     };
                     dtos.Add(dto);
                 }
