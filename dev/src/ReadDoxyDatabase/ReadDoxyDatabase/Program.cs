@@ -23,5 +23,6 @@ var functions = functionDao.GetAll();
 foreach (var funcItem in functions)
 {
     Console.WriteLine($"ID = {funcItem.Id,4} " +
-        $"DEF:{funcItem.Type, 8} {funcItem.Name,-32}");
+        $"DEF:{funcItem.Type, 8} {funcItem.Name, -32} " +
+        $"({funcItem.Definition})");
 }
