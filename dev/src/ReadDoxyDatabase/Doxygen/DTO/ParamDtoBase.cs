@@ -31,7 +31,7 @@ namespace Doxygen.DTO
         /// <summary>
         /// Data type of parameter.
         /// </summary>
-        public string Type { get; set; }
+        public string? Type { get; set; }
 
         /// <summary>
         /// Default name of parameter.
