@@ -13,6 +13,11 @@ namespace Doxygen.DTO
         /// </summary>
         public FunctionDto() : base() { }
 
+        /// <summary>
+        /// Function definition in string.
+        /// </summary>
+        public string? Definition { get; set; } = string.Empty;
+
         public IEnumerable<ParamDtoBase>? Arguments { get; set; } 
     }
 }
