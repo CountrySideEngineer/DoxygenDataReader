@@ -33,13 +33,17 @@ namespace Doxygen.DAO
                     (memberDefParam, memberDefModel) => new
                     {
                         Id = memberDefParam.RowId,
+                        MemberId = memberDefParam.MemberDefId,
+                        ParmaId = memberDefParam.ParamId,
                         Name = memberDefModel.Name,
                         Definition = memberDefModel.Definition,
                         Type = memberDefModel.Type,
                         Kind = memberDefModel.Kind,
                     }
                     )
-                    .Where(_ => _.Kind.Equals("function"));
+                    .Where(_ => _.Kind.Equals("function"))
+                    .ToList()
+                    .DistinctBy(_ => _.MemberId);
 
                 var dtos = new List<FunctionDto>();
                 foreach (var item in functions)
