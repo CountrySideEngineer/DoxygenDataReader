@@ -12,5 +12,10 @@ namespace Doxygen.DTO
         /// Default constructor.
         /// </summary>
         public ParamDto() : base() { }
+
+        /// <summary>
+        /// Parameter array devlare.
+        /// </summary>
+        public string? Array { get; set; }
     }
 }
