@@ -22,7 +22,12 @@ var functionDao = new FunctionDao();
 var functions = functionDao.GetAll();
 foreach (var funcItem in functions)
 {
-    Console.WriteLine($"ID = {funcItem.Id,4} " +
-        $"DEF:{funcItem.Type, 8} {funcItem.Name, -32} " +
-        $"({funcItem.Definition})");
+    Console.Write($"ID = {funcItem.Id,4} " +
+        $"DEF:{funcItem.Type,8} {funcItem.Name,-32} " +
+        $"({funcItem.Definition}) ");
+        foreach (var arg in funcItem.Arguments)
+    {
+        Console.Write($"{ arg.Type} {arg.Name}, ");
+    }
+    Console.WriteLine();
 }
