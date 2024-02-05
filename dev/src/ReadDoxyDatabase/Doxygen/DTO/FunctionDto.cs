@@ -18,6 +18,14 @@ namespace Doxygen.DTO
         /// </summary>
         public string? Definition { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Arguments in generics.
+        /// </summary>
         public IEnumerable<ParamDtoBase>? Arguments { get; set; } 
+
+        /// <summary>
+        /// Sub functions in generics.
+        /// </summary>
+        public IEnumerable<FunctionDto>? SubFunctions { get; set; }
     }
 }
