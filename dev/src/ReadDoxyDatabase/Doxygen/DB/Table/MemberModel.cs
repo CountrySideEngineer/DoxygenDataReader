@@ -20,7 +20,7 @@ namespace Doxygen.DB.Table
         public int ScopeRowId { get; set; }
 
         [Required]
-        [Column("memeberdef_rowdi")]
+        [Column("memeberdef_rowid")]
         public int MemberDefRowId { get; set; }
 
         [Required]
