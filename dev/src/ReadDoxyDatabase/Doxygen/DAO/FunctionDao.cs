@@ -60,6 +60,35 @@ namespace Doxygen.DAO
             return arguments;
         }
 
+        protected IEnumerable<FunctionDto> GetSubFunctionsById(int callerId, DoxygenDbContext context)
+        {
+            var xRefsModels = context.XRefsModels;
+            var memberDefModels = context.MemberDefModels;
+            var refIdModels = context.RefIdModels;
+
+            var subFunctions = xRefsModels.Join(
+                memberDefModels,
+                xRefModel => xRefModel.SrcRowId,
+                memberDefModel => memberDefModel.RowId,
+                (xRef, memberDef) => new
+                {
+                    Id = xRef.RowId,
+                    xRef.SrcRowId,
+                    xRef.DstRowId,
+                    memberDef.Type,
+                    memberDef.Name,
+                    memberDef.FileId,
+                    memberDef.BodyFileId
+                }
+                )
+                .Where(_ => _.FileId == _.BodyFileId);
+
+
+
+
+            return null;
+        }
+
         public IEnumerable<FunctionDto> GetAll()
         {
             using (var context = new DoxygenDbContext())
@@ -69,21 +98,28 @@ namespace Doxygen.DAO
                 var memberDefParamModels = context.MemberDefParamModels;
                 var memberDefModels = context.MemberDefModels;
 
-                var functions = memberDefParamModels.Join(
+                var functions = memberDefParamModels.GroupJoin(
                     memberDefModels,
                     memberDefParamModel => memberDefParamModel.MemberDefId,
                     memberDefModel => memberDefModel.RowId,
-                    (memberDefParam, memberDefModel) => new
+                    (memberDefParamModel, memberDefModelCollection) => new
                     {
-                        Id = memberDefParam.RowId,
-                        MemberId = memberDefParam.MemberDefId,
-                        ParmaId = memberDefParam.ParamId,
-                        Name = memberDefModel.Name,
-                        Definition = memberDefModel.Definition,
-                        Type = memberDefModel.Type,
-                        Kind = memberDefModel.Kind,
-                    }
-                    )
+                        memberDefParamModel.RowId,
+                        memberDefParamModel.MemberDefId,
+                        memberDefParamModel.ParamId,
+                        memeberDefs = memberDefModelCollection
+                    })
+                    .SelectMany(x => x.memeberDefs, (x, memberDefs) => new
+                    {
+                        Id = x.RowId,
+                        MemberId = x.MemberDefId,
+                        ParamId = x.ParamId,
+                        Type = memberDefs.Type,
+                        Name = memberDefs.Name,
+                        DeclName = memberDefs.ArgsString,
+                        Definition = memberDefs.Definition,
+                        Kind = memberDefs.Kind
+                    })
                     .Where(_ => _.Kind.Equals("function"))
                     .ToList()
                     .DistinctBy(_ => _.MemberId);
@@ -103,6 +139,12 @@ namespace Doxygen.DAO
                     };
                     dtos.Add(dto);
                 }
+
+                    //    GetSubFunctionsById(dto.Id, context);
+
+                    //}
+
+
 
                 return dtos;
             }
