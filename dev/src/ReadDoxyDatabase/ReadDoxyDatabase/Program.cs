@@ -31,3 +31,5 @@ foreach (var funcItem in functions)
     }
     Console.WriteLine();
 }
+
+return;
