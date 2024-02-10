@@ -14,7 +14,7 @@ namespace Doxygen.DTO
         public ParamDto() : base() { }
 
         /// <summary>
-        /// Parameter array devlare.
+        /// Parameter array declare.
         /// </summary>
         public string? Array { get; set; }
     }
