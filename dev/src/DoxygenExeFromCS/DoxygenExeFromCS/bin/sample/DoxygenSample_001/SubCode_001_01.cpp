@@ -10,7 +10,7 @@
 #include <tchar.h>
 #include "SubCode_002_01.h"
 
-extern int SampleGlobalValue;
+extern int SampleGlobalValue_001;
 
 int SubFunction_001_01(int input1, int input2);
 void SubFunction_001_02(void);
@@ -26,7 +26,7 @@ int SubFunction_001_03(int input_001_002);
  */
 int SubFunction_001_01(int input1, int input2)
 {
-	SampleGlobalValue = (input1 + input2);
+	SampleGlobalValue_001 = (input1 + input2);
 
 	return (input1 + input2);
 }
