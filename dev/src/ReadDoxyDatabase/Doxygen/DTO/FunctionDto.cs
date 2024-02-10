@@ -27,5 +27,9 @@ namespace Doxygen.DTO
         /// Sub functions in generics.
         /// </summary>
         public IEnumerable<FunctionDto>? SubFunctions { get; set; }
+
+        public IEnumerable<ParamDtoBase>? InnerGlobalVariable { get; set; }
+
+        public IEnumerable<ParamDtoBase?> ExternalVariable { get; set; }
     }
 }
