@@ -9,6 +9,8 @@
 #include <Windows.h>
 #include <tchar.h>
 
+int SampleGlobalValue_002 = 0;
+
  /**
   * @fn	SubFunction_002_01
   * @brief	Sample function No.002_01
@@ -19,7 +21,9 @@
   */
 int SubFunction_002_01(int input_002_01)
 {
-	return (input_002_01 * input_002_01);
+  SampleGlobalValue_002 = (input_002_01 * input_002_01);
+
+	return SampleGlobalValue_002;
 }
 
 /**
