@@ -23,7 +23,7 @@ namespace Doxygen.DAO
         /// <param name="memberDefId">Function id</param>
         /// <param name="context">Data base context.</param>
         /// <returns>Collection of argument datas in ParamDto pbject.</returns>
-        protected IEnumerable<ParamDto> GetArgumentsByIdOfFunc(int memberDefId, DoxygenDbContext context)
+        protected virtual IEnumerable<ParamDto> GetArgumentsByIdOfFunc(int memberDefId, DoxygenDbContext context)
         {
             var memberDerParamModels = context.MemberDefParamModels;
             var paramModels = context.ParamModels;
@@ -72,7 +72,7 @@ namespace Doxygen.DAO
         /// <param name="callerId">Caller function id.</param>
         /// <param name="context">Data base context.</param>
         /// <returns>Collection of function in FunctionDto object.</returns>
-        protected IEnumerable<FunctionDto> GetSubFunctionsById(int callerId, DoxygenDbContext context)
+        protected virtual IEnumerable<FunctionDto> GetSubFunctionsById(int callerId, DoxygenDbContext context)
         {
             var xRefsModels = context.XRefsModels;
             var memberDefModels = context.MemberDefModels;
@@ -129,7 +129,7 @@ namespace Doxygen.DAO
         /// Returns all function registered in data base.
         /// </summary>
         /// <returns>Collection of function data in FunctinoDto object.</returns>
-        public IEnumerable<FunctionDto> GetAll()
+        public virtual IEnumerable<FunctionDto> GetAll()
         {
             using (var context = new DoxygenDbContext())
             {

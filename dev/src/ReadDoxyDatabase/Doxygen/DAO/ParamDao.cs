@@ -15,7 +15,7 @@ namespace Doxygen.DAO
         /// </summary>
         public ParamDao() { }
 
-        public IEnumerable<ParamDto> GetAll()
+        public virtual IEnumerable<ParamDto> GetAll()
         {
             using (var context = new DoxygenDbContext())
             {

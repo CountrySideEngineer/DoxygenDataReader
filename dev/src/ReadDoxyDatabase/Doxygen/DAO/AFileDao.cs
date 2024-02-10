@@ -25,7 +25,7 @@ namespace Doxygen.DAO
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<FileDto> GetAll()
+        public virtual IEnumerable<FileDto> GetAll()
         {
             using (var context = new DoxygenDbContext())
             {
