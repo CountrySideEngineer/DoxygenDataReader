@@ -10,6 +10,30 @@ namespace Doxygen.DB
 {
     public class DoxygenDbContext : DbContext
     {
+        /// <summary>
+        /// Path to data base.
+        /// </summary>
+        public string Path { get; set; }
+
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public DoxygenDbContext() : base()
+        {
+            Path = ".\\doxygen_sqlite3.db";
+        }
+
+        /// <summary>
+        /// Retunrs string used when connecting to data base.
+        /// </summary>
+        /// <returns>String to connect data base.</returns>
+        protected string GetConenctionString()
+        {
+            string connectionString =
+                $"Data Source ={Path}";
+            return connectionString;
+        }
+
         public DbSet<CompoundDefModel> CompoundDefModels { get; set; }
         public DbSet<CompoundRefModel> CompoundRefModels { get; set; }
         public DbSet<ContainsModel> ContainsModels { get; set; }
@@ -26,7 +50,8 @@ namespace Doxygen.DB
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=.\\doxygen_sqlite3.db");
+            string connectionString = GetConenctionString();
+            optionsBuilder.UseSqlite(connectionString);
         }
     }
 }
