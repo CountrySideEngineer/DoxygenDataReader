@@ -66,27 +66,51 @@ namespace Doxygen.DAO
             var memberDefModels = context.MemberDefModels;
             var refIdModels = context.RefIdModels;
 
-            var subFunctions = xRefsModels.Join(
+            var subFunctions = xRefsModels.GroupJoin(
                 memberDefModels,
-                xRefModel => xRefModel.SrcRowId,
+                xRefsModel => xRefsModel.SrcRowId,
                 memberDefModel => memberDefModel.RowId,
-                (xRef, memberDef) => new
+                (xRefsModel, memberDefModelCollection) => new
                 {
-                    Id = xRef.RowId,
-                    xRef.SrcRowId,
-                    xRef.DstRowId,
-                    memberDef.Type,
-                    memberDef.Name,
-                    memberDef.FileId,
-                    memberDef.BodyFileId
-                }
-                )
-                .Where(_ => _.FileId == _.BodyFileId);
+                    xRefsModel.RowId,
+                    xRefsModel.SrcRowId,
+                    xRefsModel.DstRowId,
+                    MemerDefModel = memberDefModelCollection
+                })
+                .SelectMany(
+                refModel => refModel.MemerDefModel,
+                (refModel, memberDefModel) => new
+                {
+                    Id = refModel.RowId,
+                    refModel.SrcRowId,
+                    refModel.DstRowId,
+                    memberDefModel.Type,
+                    memberDefModel.Name,
+                    memberDefModel.Definition,
+                    memberDefModel.ArgsString,
+                    memberDefModel.Scope,
+                    memberDefModel.Kind,
+                    memberDefModel.FileId,
+                    memberDefModel.BodyFileId
+                })
+                .Where(_ => _.SrcRowId.Equals(callerId) && (_.FileId.Equals(_.BodyFileId)))
+                .ToList();
 
-
-
-
-            return null;
+            var dtos = new List<FunctionDto>();
+            foreach (var item in subFunctions)
+            {
+                var arguments = GetArgumentsByIdOfFunc(item.DstRowId, context);
+                var dto = new FunctionDto()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Type = item.Type,
+                    Definition = item.Definition,
+                    Arguments = arguments
+                };
+                dtos.Add(dto);
+            }
+            return dtos;
         }
 
         public IEnumerable<FunctionDto> GetAll()
@@ -128,6 +152,7 @@ namespace Doxygen.DAO
                 foreach (var item in functions)
                 {
                     var arguments = GetArgumentsByIdOfFunc(item.MemberId, context);
+                    var subFunctions = GetSubFunctionsById(item.MemberId, context);
 
                     var dto = new FunctionDto()
                     {
@@ -135,16 +160,11 @@ namespace Doxygen.DAO
                         Name = item.Name,
                         Type = item.Type,
                         Definition = item.Definition,
-                        Arguments = arguments
+                        Arguments = arguments,
+                        SubFunctions = subFunctions
                     };
                     dtos.Add(dto);
                 }
-
-                    //    GetSubFunctionsById(dto.Id, context);
-
-                    //}
-
-
 
                 return dtos;
             }
