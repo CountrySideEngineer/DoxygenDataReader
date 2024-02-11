@@ -28,8 +28,9 @@ namespace Doxygen.DTO
         /// </summary>
         public IEnumerable<FunctionDto>? SubFunctions { get; set; }
 
-        public IEnumerable<ParamDtoBase>? InnerGlobalVariable { get; set; }
-
-        public IEnumerable<ParamDtoBase?> ExternalVariable { get; set; }
+        /// <summary>
+        /// Global variables the function, method refers.
+        /// </summary>
+        public IEnumerable<ParamDtoBase>? GlobalVariables { get; set; }
     }
 }
