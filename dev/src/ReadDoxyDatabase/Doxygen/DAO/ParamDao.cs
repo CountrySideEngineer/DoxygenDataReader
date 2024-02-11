@@ -8,41 +8,38 @@ using System.Threading.Tasks;
 
 namespace Doxygen.DAO
 {
-    public class ParamDao
+    public class ParamDao : ADao
     {
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public ParamDao() { }
+        public ParamDao() : base() { }
 
-        public virtual IEnumerable<ParamDto> GetAll()
+        public override IEnumerable<ParamDtoBase> GetAll(DoxygenDbContext context)
         {
-            using (var context = new DoxygenDbContext())
+            context.Database.EnsureCreated();
+
+            var memberDefParamModels = context.MemberDefParamModels;
+            var paramModels = context.ParamModels;
+            var parameters = paramModels.ToList();
+
+            var dtos = new List<ParamDto>();
+            foreach (var item in parameters)
             {
-                context.Database.EnsureCreated();
-
-                var memberDefParamModels = context.MemberDefParamModels;
-                var paramModels = context.ParamModels;
-                var parameters = paramModels.ToList();
-
-                var dtos = new List<ParamDto>();
-                foreach (var item in parameters)
+                var dto = new ParamDto()
                 {
-                    var dto = new ParamDto()
-                    {
-                        Id = item.RowId,
-                        Attribute = item.Attributes,
-                        Type = item.Type,
-                        Name = item.DeclName,
-                        DefaultName = item.DefName,
-                        IsArray = Convert.ToInt32(item.Array),
-                        DefaultValue = item.DefVal,
-                        BriefDescription = item.BriefDescription
-                    };
-                    dtos.Add(dto);
-                }
-                return dtos;
+                    Id = item.RowId,
+                    Attribute = item.Attributes,
+                    Type = item.Type,
+                    Name = item.DeclName,
+                    DefaultName = item.DefName,
+                    IsArray = Convert.ToInt32(item.Array),
+                    DefaultValue = item.DefVal,
+                    BriefDescription = item.BriefDescription
+                };
+                dtos.Add(dto);
             }
+            return dtos;
         }
     }
 }
