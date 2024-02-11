@@ -66,6 +66,60 @@ namespace Doxygen.DAO
             return arguments;
         }
 
+        protected virtual IEnumerable<ParamDto> GetGlobalVarialbesByIdOfFunc(int referId, DoxygenDbContext context)
+        {
+            var xRefsModels = context.XRefsModels;
+            var memberDefModels = context.MemberDefModels;
+
+            var globalVarialbeModels = xRefsModels.GroupJoin(
+                memberDefModels,
+                xRefsModel => xRefsModel.SrcRowId,
+                memberDefModel => memberDefModel.RowId,
+                (xRefsModel, memberDefModelCollection) => new
+                {
+                    Id = xRefsModel.RowId,
+                    xRefsModel.SrcRowId,
+                    xRefsModel.DstRowId,
+                    MemberDefModel = memberDefModelCollection
+                })
+                .SelectMany(
+                    refModel => refModel.MemberDefModel,
+                    (refModel, memberDefModel) => new
+                    {
+                        refModel.Id,
+                        refModel.SrcRowId,
+                        refModel.DstRowId,
+                        memberDefModel.Type,
+                        memberDefModel.Name,
+                        memberDefModel.Definition,
+                        memberDefModel.Scope,
+                        memberDefModel.Kind,
+                        memberDefModel.FileId,
+                        memberDefModel.BodyFileId
+                    }
+                )
+                .Where(_ => _.SrcRowId.Equals(referId) &&
+                    (_.BodyFileId.Equals(_.FileId)) &&
+                    (_.Kind.ToLower().Equals("variable")))
+                .ToList()
+                .DistinctBy(_ => _.Name);
+
+            var dtos = new List<ParamDto>();
+            foreach (var item in globalVarialbeModels)
+            {
+                var dto = new ParamDto()
+                {
+                    Id = item.Id,
+                    Type = item.Type,
+                    Name = item.Name,
+                    Scope = item.Scope
+                };
+                dtos.Add(dto);
+            }
+
+            return dtos;
+        }
+
         /// <summary>
         /// Returns collection of sub functions 
         /// </summary>
@@ -160,7 +214,7 @@ namespace Doxygen.DAO
                         Definition = memberDefs.Definition,
                         Kind = memberDefs.Kind
                     })
-                    .Where(_ => _.Kind.Equals("function"))
+                    .Where(_ => _.Kind.ToLower().Equals("function"))
                     .ToList()
                     .DistinctBy(_ => _.MemberId);
 
@@ -169,6 +223,7 @@ namespace Doxygen.DAO
                 {
                     var arguments = GetArgumentsByIdOfFunc(item.MemberId, context);
                     var subFunctions = GetSubFunctionsById(item.MemberId, context);
+                    var glovalVariables = GetGlobalVarialbesByIdOfFunc(item.MemberId, context);
 
                     var dto = new FunctionDto()
                     {
@@ -177,7 +232,8 @@ namespace Doxygen.DAO
                         Type = item.Type,
                         Definition = item.Definition,
                         Arguments = arguments,
-                        SubFunctions = subFunctions
+                        SubFunctions = subFunctions,
+                        GlobalVariables = glovalVariables
                     };
                     dtos.Add(dto);
                 }
