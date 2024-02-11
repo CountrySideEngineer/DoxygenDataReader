@@ -66,6 +66,12 @@ namespace Doxygen.DAO
             return arguments;
         }
 
+        /// <summary>
+        /// Returns collection of global variable a function refers.
+        /// </summary>
+        /// <param name="referId">Function id</param>
+        /// <param name="context">Data base context.</param>
+        /// <returns>Collection of global varialbe the function refers.</returns>
         protected virtual IEnumerable<ParamDto> GetGlobalVarialbesByIdOfFunc(int referId, DoxygenDbContext context)
         {
             var xRefsModels = context.XRefsModels;
