@@ -216,7 +216,8 @@ namespace Doxygen.DAO
                     Name = memberDefs.Name,
                     DeclName = memberDefs.ArgsString,
                     Definition = memberDefs.Definition,
-                    Kind = memberDefs.Kind
+                    Kind = memberDefs.Kind,
+                    memberDefs.Scope
                 })
                 .Where(_ => _.Kind.ToLower().Equals("function"))
                 .ToList()
@@ -237,7 +238,8 @@ namespace Doxygen.DAO
                     Definition = item.Definition,
                     Arguments = arguments,
                     SubFunctions = subFunctions,
-                    GlobalVariables = glovalVariables
+                    GlobalVariables = glovalVariables,
+                    Scope = item.Scope
                 };
                 dtos.Add(dto);
             }

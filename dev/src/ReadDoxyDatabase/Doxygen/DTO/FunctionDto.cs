@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Doxygen.DTO
 {
-    public class FunctionDto : ParamDtoBase
+    public class FunctionDto : ParamDto
     {
         /// <summary>
         /// Default Constructor.
