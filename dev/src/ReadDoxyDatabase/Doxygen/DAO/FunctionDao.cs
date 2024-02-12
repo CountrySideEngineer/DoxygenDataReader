@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Doxygen.DAO
 {
-    public class FunctionDao
+    public class FunctionDao : ADao
     {
         /// <summary>
         /// Default constructor
@@ -189,63 +189,60 @@ namespace Doxygen.DAO
         /// Returns all function registered in data base.
         /// </summary>
         /// <returns>Collection of function data in FunctinoDto object.</returns>
-        public virtual IEnumerable<FunctionDto> GetAll()
+        public override IEnumerable<ParamDtoBase> GetAll(DoxygenDbContext context)
         {
-            using (var context = new DoxygenDbContext())
-            {
-                context.Database.EnsureCreated();
+            context.Database.EnsureCreated();
 
-                var memberDefParamModels = context.MemberDefParamModels;
-                var memberDefModels = context.MemberDefModels;
+            var memberDefParamModels = context.MemberDefParamModels;
+            var memberDefModels = context.MemberDefModels;
 
-                var functions = memberDefParamModels.GroupJoin(
-                    memberDefModels,
-                    memberDefParamModel => memberDefParamModel.MemberDefId,
-                    memberDefModel => memberDefModel.RowId,
-                    (memberDefParamModel, memberDefModelCollection) => new
-                    {
-                        memberDefParamModel.RowId,
-                        memberDefParamModel.MemberDefId,
-                        memberDefParamModel.ParamId,
-                        memeberDefs = memberDefModelCollection
-                    })
-                    .SelectMany(x => x.memeberDefs, (x, memberDefs) => new
-                    {
-                        Id = x.RowId,
-                        MemberId = x.MemberDefId,
-                        ParamId = x.ParamId,
-                        Type = memberDefs.Type,
-                        Name = memberDefs.Name,
-                        DeclName = memberDefs.ArgsString,
-                        Definition = memberDefs.Definition,
-                        Kind = memberDefs.Kind
-                    })
-                    .Where(_ => _.Kind.ToLower().Equals("function"))
-                    .ToList()
-                    .DistinctBy(_ => _.MemberId);
-
-                var dtos = new List<FunctionDto>();
-                foreach (var item in functions)
+            var functions = memberDefParamModels.GroupJoin(
+                memberDefModels,
+                memberDefParamModel => memberDefParamModel.MemberDefId,
+                memberDefModel => memberDefModel.RowId,
+                (memberDefParamModel, memberDefModelCollection) => new
                 {
-                    var arguments = GetArgumentsByIdOfFunc(item.MemberId, context);
-                    var subFunctions = GetSubFunctionsById(item.MemberId, context);
-                    var glovalVariables = GetGlobalVarialbesByIdOfFunc(item.MemberId, context);
+                    memberDefParamModel.RowId,
+                    memberDefParamModel.MemberDefId,
+                    memberDefParamModel.ParamId,
+                    memeberDefs = memberDefModelCollection
+                })
+                .SelectMany(x => x.memeberDefs, (x, memberDefs) => new
+                {
+                    Id = x.RowId,
+                    MemberId = x.MemberDefId,
+                    ParamId = x.ParamId,
+                    Type = memberDefs.Type,
+                    Name = memberDefs.Name,
+                    DeclName = memberDefs.ArgsString,
+                    Definition = memberDefs.Definition,
+                    Kind = memberDefs.Kind
+                })
+                .Where(_ => _.Kind.ToLower().Equals("function"))
+                .ToList()
+                .DistinctBy(_ => _.MemberId);
 
-                    var dto = new FunctionDto()
-                    {
-                        Id = item.Id,
-                        Name = item.Name,
-                        Type = item.Type,
-                        Definition = item.Definition,
-                        Arguments = arguments,
-                        SubFunctions = subFunctions,
-                        GlobalVariables = glovalVariables
-                    };
-                    dtos.Add(dto);
-                }
+            var dtos = new List<FunctionDto>();
+            foreach (var item in functions)
+            {
+                var arguments = GetArgumentsByIdOfFunc(item.MemberId, context);
+                var subFunctions = GetSubFunctionsById(item.MemberId, context);
+                var glovalVariables = GetGlobalVarialbesByIdOfFunc(item.MemberId, context);
 
-                return dtos;
+                var dto = new FunctionDto()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Type = item.Type,
+                    Definition = item.Definition,
+                    Arguments = arguments,
+                    SubFunctions = subFunctions,
+                    GlobalVariables = glovalVariables
+                };
+                dtos.Add(dto);
             }
+
+            return dtos;
         }
     }
 }

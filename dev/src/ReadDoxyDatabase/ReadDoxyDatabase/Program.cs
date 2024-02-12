@@ -22,8 +22,9 @@ foreach (var item in files)
 
 var functionDao = new FunctionDao();
 var functions = functionDao.GetAll();
-foreach (var funcItem in functions)
+foreach (var item in functions)
 {
+    var funcItem = (FunctionDto)item;
     Console.Write($"ID = {funcItem.Id,4} " +
         $"DEF:{funcItem.Type,8} {funcItem.Name,-32} " +
         $"({funcItem.Definition}) ");
