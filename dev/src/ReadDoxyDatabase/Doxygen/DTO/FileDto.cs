@@ -7,22 +7,12 @@ using System.Threading.Tasks;
 
 namespace Doxygen.DTO
 {
-    public class FileDto
+    public class FileDto : ParamDtoBase
     {
         /// <summary>
         /// Default constructor.
         /// </summary>
         public FileDto() { }
-
-        /// <summary>
-        /// ID in the table.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// File name.
-        /// </summary>
-        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// File full path.

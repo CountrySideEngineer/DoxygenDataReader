@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Doxygen.DTO
 {
-    public class FunctionDto : ParamDtoBase
+    public class FunctionDto : ParamDto
     {
         /// <summary>
         /// Default Constructor.
@@ -27,5 +27,10 @@ namespace Doxygen.DTO
         /// Sub functions in generics.
         /// </summary>
         public IEnumerable<FunctionDto>? SubFunctions { get; set; }
+
+        /// <summary>
+        /// Global variables the function, method refers.
+        /// </summary>
+        public IEnumerable<ParamDtoBase>? GlobalVariables { get; set; }
     }
 }
