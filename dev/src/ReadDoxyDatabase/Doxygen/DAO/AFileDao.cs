@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Doxygen.DAO
 {
-    public abstract class AFileDao
+    public abstract class AFileDao : ADao
     {
         /// <summary>
         /// Abstract method which returns file extension.
@@ -23,49 +23,45 @@ namespace Doxygen.DAO
         public AFileDao() { }
 
         /// <summary>
+        /// Read all file informatino from data base.
         /// </summary>
-        /// <returns></returns>
-        public IEnumerable<FileDto> GetAll()
+        /// <param name="context">Data base context.</param>
+        /// <returns>Collection of file information from data base.</returns>
+        public override IEnumerable<ParamDtoBase> GetAll(DoxygenDbContext context)
         {
-            using (var context = new DoxygenDbContext())
-            {
-                context.Database.EnsureCreated();
+            context.Database.EnsureCreated();
 
-                var pathModels = context.PathModels;
-                var compoundDefModels = context.CompoundDefModels;
-                var files = compoundDefModels.Join(
-                    pathModels,
-                    compound => compound.FileId,
-                    path => path.RowId,
-                    (compound, path) => new
-                    {
-                        Id = compound.RowId,
-                        Name = compound.Name,
-                        Path = path.Name,
-                        Kind = compound.Kind
-                    }
-                    )
-                    .Where(_ =>
-                        _.Kind.Equals("file") &&
-                        _.Path
-                            .Substring(_.Path.Length - GetFileExtension().Length,
-                                GetFileExtension().Length)
-                            .ToLower()
-                            .Equals(GetFileExtension()));
-
-                var fileDtos = new List<FileDto>();
-                foreach (var item in files)
+            var pathModels = context.PathModels;
+            var compoundDefModels = context.CompoundDefModels;
+            var files = compoundDefModels.Join(
+                pathModels,
+                compound => compound.FileId,
+                path => path.RowId,
+                (compound, path) => new
                 {
-                    var dto = new FileDto()
-                    {
-                        Id = item.Id,
-                        Name = item.Name,
-                        Path = item.Path
-                    };
-                    fileDtos.Add(dto);
-                }
-                return fileDtos;
+                    Id = compound.RowId,
+                    Name = compound.Name,
+                    Path = path.Name,
+                    Kind = compound.Kind
+                })
+                .Where(_ =>
+                    _.Kind.Equals("file") &&
+                    _.Path.Substring(
+                        _.Path.Length - GetFileExtension().Length,
+                        GetFileExtension().Length).ToLower().Equals(GetFileExtension()));
+
+            var fileDtos = new List<ParamDtoBase>();
+            foreach (var item in files)
+            {
+                FileDto dto = new FileDto()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Path = item.Path
+                };
+                fileDtos.Add(dto);
             }
+            return fileDtos;
         }
     }
 }
