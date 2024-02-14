@@ -3,6 +3,7 @@ using Doxygen.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,15 +23,8 @@ namespace Doxygen.DAO
         /// </summary>
         public AFileDao() { }
 
-        /// <summary>
-        /// Read all file informatino from data base.
-        /// </summary>
-        /// <param name="context">Data base context.</param>
-        /// <returns>Collection of file information from data base.</returns>
-        public override IEnumerable<ParamDtoBase> GetAll(DoxygenDbContext context)
+        protected virtual IQueryable<dynamic> GetFiles(DoxygenDbContext context)
         {
-            context.Database.EnsureCreated();
-
             var pathModels = context.PathModels;
             var compoundDefModels = context.CompoundDefModels;
             var files = compoundDefModels.Join(
@@ -50,6 +44,11 @@ namespace Doxygen.DAO
                         _.Path.Length - GetFileExtension().Length,
                         GetFileExtension().Length).ToLower().Equals(GetFileExtension()));
 
+            return files;
+        }
+
+        protected virtual IEnumerable<ParamDtoBase> ConvertToDto(dynamic files)
+        {
             var fileDtos = new List<ParamDtoBase>();
             foreach (var item in files)
             {
@@ -61,6 +60,22 @@ namespace Doxygen.DAO
                 };
                 fileDtos.Add(dto);
             }
+            return fileDtos;
+        }
+
+
+        /// <summary>
+        /// Read all file informatino from data base.
+        /// </summary>
+        /// <param name="context">Data base context.</param>
+        /// <returns>Collection of file information from data base.</returns>
+        public override IEnumerable<ParamDtoBase> GetAll(DoxygenDbContext context)
+        {
+            context.Database.EnsureCreated();
+            var files = GetFiles(context);
+
+            IEnumerable<ParamDtoBase> fileDtos = ConvertToDto(files);
+
             return fileDtos;
         }
     }
