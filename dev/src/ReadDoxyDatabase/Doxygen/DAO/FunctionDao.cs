@@ -1,6 +1,7 @@
 ﻿using Doxygen.DB;
 using Doxygen.DB.Table;
 using Doxygen.DTO;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace Doxygen.DAO
         /// <param name="memberDefId">Function id</param>
         /// <param name="context">Data base context.</param>
         /// <returns>Collection of argument datas in ParamDto pbject.</returns>
-        protected virtual IEnumerable<ParamDto> GetArgumentsByIdOfFunc(int memberDefId, DoxygenDbContext context)
+        internal virtual IEnumerable<ParamDto> GetArgumentsByIdOfFunc(int memberDefId, DoxygenDbContext context)
         {
             var memberDerParamModels = context.MemberDefParamModels;
             var paramModels = context.ParamModels;
@@ -72,7 +73,7 @@ namespace Doxygen.DAO
         /// <param name="referId">Function id</param>
         /// <param name="context">Data base context.</param>
         /// <returns>Collection of global varialbe the function refers.</returns>
-        protected virtual IEnumerable<ParamDto> GetGlobalVarialbesByIdOfFunc(int referId, DoxygenDbContext context)
+        internal virtual IEnumerable<ParamDto> GetGlobalVarialbesByIdOfFunc(int referId, DoxygenDbContext context)
         {
             var xRefsModels = context.XRefsModels;
             var memberDefModels = context.MemberDefModels;
@@ -132,7 +133,7 @@ namespace Doxygen.DAO
         /// <param name="callerId">Caller function id.</param>
         /// <param name="context">Data base context.</param>
         /// <returns>Collection of function in FunctionDto object.</returns>
-        protected virtual IEnumerable<FunctionDto> GetSubFunctionsById(int callerId, DoxygenDbContext context)
+        internal virtual IEnumerable<FunctionDto> GetSubFunctionsById(int callerId, DoxygenDbContext context)
         {
             var xRefsModels = context.XRefsModels;
             var memberDefModels = context.MemberDefModels;
@@ -189,12 +190,13 @@ namespace Doxygen.DAO
         /// Returns all function registered in data base.
         /// </summary>
         /// <returns>Collection of function data in FunctinoDto object.</returns>
-        public override IEnumerable<ParamDtoBase> GetAll(DoxygenDbContext context)
+        public override IEnumerable<ParamDtoBase> GetAll(DbContext context)
         {
-            context.Database.EnsureCreated();
+            DoxygenDbContext doxygenContext = (DoxygenDbContext)context;
+            doxygenContext.Database.EnsureCreated();
 
-            var memberDefParamModels = context.MemberDefParamModels;
-            var memberDefModels = context.MemberDefModels;
+            var memberDefParamModels = doxygenContext.MemberDefParamModels;
+            var memberDefModels = doxygenContext.MemberDefModels;
 
             var functions = memberDefParamModels.GroupJoin(
                 memberDefModels,
@@ -217,7 +219,9 @@ namespace Doxygen.DAO
                     DeclName = memberDefs.ArgsString,
                     Definition = memberDefs.Definition,
                     Kind = memberDefs.Kind,
-                    memberDefs.Scope
+                    memberDefs.Scope,
+                    memberDefs.BodyFileId,
+                    memberDefs.FileId,
                 })
                 .Where(_ => _.Kind.ToLower().Equals("function"))
                 .ToList()
@@ -226,9 +230,9 @@ namespace Doxygen.DAO
             var dtos = new List<FunctionDto>();
             foreach (var item in functions)
             {
-                var arguments = GetArgumentsByIdOfFunc(item.MemberId, context);
-                var subFunctions = GetSubFunctionsById(item.MemberId, context);
-                var glovalVariables = GetGlobalVarialbesByIdOfFunc(item.MemberId, context);
+                var arguments = GetArgumentsByIdOfFunc(item.MemberId, doxygenContext);
+                var subFunctions = GetSubFunctionsById(item.MemberId, doxygenContext);
+                var glovalVariables = GetGlobalVarialbesByIdOfFunc(item.MemberId, doxygenContext);
 
                 var dto = new FunctionDto()
                 {

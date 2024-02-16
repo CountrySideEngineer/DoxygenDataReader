@@ -1,5 +1,6 @@
 ﻿using Doxygen.DB;
 using Doxygen.DTO;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +24,12 @@ namespace Doxygen.DAO
         /// </summary>
         public AFileDao() { }
 
-        protected virtual IQueryable<dynamic> GetFiles(DoxygenDbContext context)
+        protected virtual IQueryable<dynamic> GetFiles(DbContext context)
         {
-            var pathModels = context.PathModels;
-            var compoundDefModels = context.CompoundDefModels;
+            DoxygenDbContext doxygenContext = (DoxygenDbContext)context;
+
+            var pathModels = doxygenContext.PathModels;
+            var compoundDefModels = doxygenContext.CompoundDefModels;
             var files = compoundDefModels.Join(
                 pathModels,
                 compound => compound.FileId,
@@ -36,7 +39,8 @@ namespace Doxygen.DAO
                     Id = compound.RowId,
                     Name = compound.Name,
                     Path = path.Name,
-                    Kind = compound.Kind
+                    Kind = compound.Kind,
+                    FileId = compound.FileId,
                 })
                 .Where(_ =>
                     _.Kind.Equals("file") &&
@@ -63,13 +67,12 @@ namespace Doxygen.DAO
             return fileDtos;
         }
 
-
         /// <summary>
         /// Read all file informatino from data base.
         /// </summary>
         /// <param name="context">Data base context.</param>
         /// <returns>Collection of file information from data base.</returns>
-        public override IEnumerable<ParamDtoBase> GetAll(DoxygenDbContext context)
+        public override IEnumerable<ParamDtoBase> GetAll(DbContext context)
         {
             context.Database.EnsureCreated();
             var files = GetFiles(context);
