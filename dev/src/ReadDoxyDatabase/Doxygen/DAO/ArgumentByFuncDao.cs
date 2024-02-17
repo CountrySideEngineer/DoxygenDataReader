@@ -17,7 +17,7 @@ namespace Doxygen.DAO
         /// </summary>
         public ArgumentByFuncDao() : base() { }
 
-        public override IEnumerable<ParamDtoBase> GetById(int callerFuncId, DbContext context)
+        protected virtual IQueryable<dynamic> GetArguments(int callerFuncId, DbContext context)
         {
             DoxygenDbContext doxyenContext = (DoxygenDbContext)context;
 
@@ -49,9 +49,13 @@ namespace Doxygen.DAO
                         paramModelItem.BriefDescription
                     }
                 )
-                .Where(_ => _.MemberDefId.Equals(callerFuncId))
-                .ToList();
+                .Where(_ => _.MemberDefId.Equals(callerFuncId));
 
+            return argumentsModels;
+        }
+
+        protected virtual IEnumerable<ParamDtoBase> ConvertToDto(dynamic argumentsModels)
+        {
             var arguments = new List<ParamDto>();
             foreach (var item in argumentsModels)
             {
@@ -67,6 +71,14 @@ namespace Doxygen.DAO
                 };
                 arguments.Add(dto);
             }
+
+            return arguments;
+        }
+
+        public override IEnumerable<ParamDtoBase> GetById(int callerFuncId, DbContext context)
+        {
+            IQueryable<dynamic> argumentsModel = GetArguments(callerFuncId, context);
+            IEnumerable<ParamDtoBase> arguments = ConvertToDto(argumentsModel);
 
             return arguments;
         }
