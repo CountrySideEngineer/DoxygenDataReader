@@ -26,45 +26,10 @@ namespace Doxygen.DAO
         /// <returns>Collection of argument datas in ParamDto pbject.</returns>
         internal virtual IEnumerable<ParamDto> GetArgumentsByIdOfFunc(int memberDefId, DoxygenDbContext context)
         {
-            var memberDerParamModels = context.MemberDefParamModels;
-            var paramModels = context.ParamModels;
+            var dao = new ArgumentByFuncDao();
+            var arguemnts = (IEnumerable<ParamDto>)dao.GetById(memberDefId, context);
 
-            var argumentsModels = memberDerParamModels.Join(
-                paramModels,
-                memberDefParamModel => memberDefParamModel.ParamId,
-                paramModel => paramModel.RowId,
-                (memberDefParamModel, paramModel) => new
-                {
-                    Id = memberDefParamModel.RowId,
-                    memberDefParamModel.MemberDefId,
-                    memberDefParamModel.ParamId,
-                    paramModel.Attributes,
-                    paramModel.Type,
-                    Name = paramModel.DeclName,
-                    DefaultName = paramModel.DefName,
-                    paramModel.Array,
-                    DefaultValue = paramModel.DefVal,
-                    paramModel.BriefDescription
-                })
-                .Where(_ => _.MemberDefId == memberDefId);
-
-            var arguments = new List<ParamDto>();
-            foreach (var item in argumentsModels)
-            {
-                var dto = new ParamDto()
-                {
-                    Id = item.ParamId,
-                    Type = item.Type,
-                    Name = item.Name,
-                    DefaultName = item.DefaultName,
-                    Array = item.Array,
-                    DefaultValue = item.DefaultValue,
-                    BriefDescription = item.BriefDescription
-                };
-                arguments.Add(dto);
-            }
-
-            return arguments;
+            return arguemnts;
         }
 
         /// <summary>
