@@ -130,59 +130,12 @@ namespace Doxygen.DAO
         /// <param name="callerId">Caller function id.</param>
         /// <param name="context">Data base context.</param>
         /// <returns>Collection of function in FunctionDto object.</returns>
-        internal virtual IEnumerable<FunctionDto> GetSubFunctionsById(int callerId, DoxygenDbContext context)
+        internal virtual IEnumerable<ParamDtoBase> GetSubFunctionsById(int callerId, DoxygenDbContext context)
         {
-            var xRefsModels = context.XRefsModels;
-            var memberDefModels = context.MemberDefModels;
+            var dao = new FunctionCalledByDao();
+            var functions = dao.GetById(callerId, context);
 
-            var subFunctions = xRefsModels.GroupJoin(
-                memberDefModels,
-                xRefsModel => xRefsModel.DstRowId,
-                memberDefModel => memberDefModel.RowId,
-                (xRefsModel, memberDefModelCollection) => new
-                {
-                    xRefsModel.RowId,
-                    xRefsModel.SrcRowId,
-                    xRefsModel.DstRowId,
-                    MemerDefModel = memberDefModelCollection
-                })
-                .SelectMany(
-                refModel => refModel.MemerDefModel,
-                (refModel, memberDefModel) => new
-                {
-                    Id = refModel.RowId,
-                    refModel.SrcRowId,
-                    refModel.DstRowId,
-                    memberDefModel.Type,
-                    memberDefModel.Name,
-                    memberDefModel.Definition,
-                    memberDefModel.ArgsString,
-                    memberDefModel.Scope,
-                    memberDefModel.Kind,
-                    memberDefModel.FileId,
-                    memberDefModel.BodyFileId
-                })
-                .Where(_ => 
-                    _.SrcRowId.Equals(callerId) && 
-                    (_.FileId.Equals(_.BodyFileId)) &&
-                    (_.Kind.ToLower().Equals("function")))
-                .ToList();
-
-            var dtos = new List<FunctionDto>();
-            foreach (var item in subFunctions)
-            {
-                var arguments = GetArgumentsByIdOfFunc(item.SrcRowId, context);
-                var dto = new FunctionDto()
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Type = item.Type,
-                    Definition = item.Definition,
-                    Arguments = arguments
-                };
-                dtos.Add(dto);
-            }
-            return dtos;
+            return functions;
         }
 
         protected virtual
