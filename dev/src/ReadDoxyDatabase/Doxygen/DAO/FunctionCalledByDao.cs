@@ -28,6 +28,18 @@ namespace Doxygen.DAO
             throw new NotSupportedException();
         }
 
+        /// <summary>
+        /// Get all method.
+        /// This method is not supported in this DAO.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        /// <exception cref="NotSupportedException"></exception>
+        public override IEnumerable<ParamDtoBase> GetAll(DbContext context)
+        {
+            throw new NotSupportedException();
+        }
+
         public override IEnumerable<ParamDtoBase> GetById(int callerId, DbContext context)
         {
             IEnumerable<dynamic> functions = GetFunction(callerId, context);
