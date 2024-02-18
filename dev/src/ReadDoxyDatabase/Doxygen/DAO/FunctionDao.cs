@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,41 +23,49 @@ namespace Doxygen.DAO
         protected virtual IEnumerable<dynamic> GetFunction(DbContext context)
         {
             DoxygenDbContext doxygenContext = (DoxygenDbContext)context;
+            var memberDefModels = doxygenContext.MemberDefModels
+                .Where(
+                    _ => _.Kind.ToLower().Equals("function") &&
+                    (_.BodyFileId.Equals(_.FileId)))
+                .ToList();
 
-            var memberDefParamModels = doxygenContext.MemberDefParamModels;
-            var memberDefModels = doxygenContext.MemberDefModels;
+            return memberDefModels;
 
-            var functions = memberDefParamModels.GroupJoin(
-                memberDefModels,
-                memberDefParamModel => memberDefParamModel.MemberDefId,
-                memberDefModel => memberDefModel.RowId,
-                (memberDefParamModel, memberDefModelCollection) => new
-                {
-                    memberDefParamModel.RowId,
-                    memberDefParamModel.MemberDefId,
-                    memberDefParamModel.ParamId,
-                    memeberDefs = memberDefModelCollection
-                })
-                .SelectMany(
-                memberDefParam => memberDefParam.memeberDefs, 
-                (memberDefParam, memberDefs) => new
-                {
-                    Id = memberDefParam.MemberDefId,
-                    ParamId = memberDefParam.ParamId,
-                    Type = memberDefs.Type,
-                    Name = memberDefs.Name,
-                    DeclName = memberDefs.ArgsString,
-                    Definition = memberDefs.Definition,
-                    Kind = memberDefs.Kind,
-                    memberDefs.Scope,
-                    memberDefs.BodyFileId,
-                    memberDefs.FileId,
-                })
-                .Where(_ => _.Kind.ToLower().Equals("function"))
-                .ToList()
-                .DistinctBy(_ => _.Id);
+            //var memberDefModels = doxygenContext.MemberDefModels;
+            //var memberDefParamModels = doxygenContext.MemberDefParamModels;
 
-            return functions;
+            //var functions = memberDefModels.GroupJoin(
+            //    memberDefParamModels,
+            //    memberDefModel => memberDefModel.RowId,
+            //    memberDefParamModel => memberDefParamModel.MemberDefId,
+            //    (memberDefModel, memberDefParamModelCollection) => new
+            //    {
+            //        memberDefModel,
+            //        memberDefParamModelCollection
+            //    }
+            //    )
+            //    .SelectMany(
+            //    inputModel => inputModel.memberDefParamModelCollection,
+            //    (inputModel, memberDefParamModelItem) => new
+            //    {
+            //        Id = inputModel.memberDefModel.RowId,
+            //        inputModel.memberDefModel.Type,
+            //        inputModel.memberDefModel.Name,
+            //        DeclName = inputModel.memberDefModel.ArgsString,
+            //        inputModel.memberDefModel.Definition,
+            //        inputModel.memberDefModel.Kind,
+            //        inputModel.memberDefModel.Scope,
+            //        inputModel.memberDefModel.BodyFileId,
+            //        inputModel.memberDefModel.FileId,
+            //        memberDefParamModelItem.MemberDefId,
+            //        memberDefParamModelItem.ParamId,
+            //    }
+            //    )
+            //    .Where(_ => _.Kind.ToLower().Equals("function"))
+            //    .ToList()
+            //    .DistinctBy(_ => _.MemberDefId);
+
+            //return functions;
         }
 
         protected virtual IEnumerable<ParamDtoBase> ConvertToDto(IEnumerable<dynamic> functions)
@@ -66,7 +75,7 @@ namespace Doxygen.DAO
             {
                 var dto = new FunctionDto()
                 {
-                    Id = item.Id,
+                    Id = item.RowId,
                     Name = item.Name,
                     Type = item.Type,
                     Definition = item.Definition,
@@ -161,11 +170,10 @@ namespace Doxygen.DAO
         {
             var xRefsModels = context.XRefsModels;
             var memberDefModels = context.MemberDefModels;
-            var refIdModels = context.RefIdModels;
 
             var subFunctions = xRefsModels.GroupJoin(
                 memberDefModels,
-                xRefsModel => xRefsModel.SrcRowId,
+                xRefsModel => xRefsModel.DstRowId,
                 memberDefModel => memberDefModel.RowId,
                 (xRefsModel, memberDefModelCollection) => new
                 {
@@ -190,13 +198,16 @@ namespace Doxygen.DAO
                     memberDefModel.FileId,
                     memberDefModel.BodyFileId
                 })
-                .Where(_ => _.SrcRowId.Equals(callerId) && (_.FileId.Equals(_.BodyFileId)))
+                .Where(_ => 
+                    _.SrcRowId.Equals(callerId) && 
+                    (_.FileId.Equals(_.BodyFileId)) &&
+                    (_.Kind.ToLower().Equals("function")))
                 .ToList();
 
             var dtos = new List<FunctionDto>();
             foreach (var item in subFunctions)
             {
-                var arguments = GetArgumentsByIdOfFunc(item.DstRowId, context);
+                var arguments = GetArgumentsByIdOfFunc(item.SrcRowId, context);
                 var dto = new FunctionDto()
                 {
                     Id = item.Id,
