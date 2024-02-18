@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,16 +28,14 @@ namespace Doxygen.DAO
             throw new NotSupportedException();
         }
 
-        /// <summary>
-        /// Get all method.
-        /// This method is not supported in this DAO.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        /// <exception cref="NotSupportedException"></exception>
-        public override IEnumerable<ParamDtoBase> GetAll(DbContext context)
+        public override IEnumerable<ParamDtoBase> GetById(int callerId, DbContext context)
         {
-            throw new NotSupportedException();
+            IEnumerable<dynamic> functions = GetFunction(callerId, context);
+            IEnumerable<ParamDtoBase> dtos = ConvertToDto(functions);
+
+            SetupParameters(ref dtos, context);
+
+            return dtos;
         }
 
         protected virtual IEnumerable<dynamic> GetFunction(int callerId, DbContext context)
@@ -58,7 +57,7 @@ namespace Doxygen.DAO
                 xRefModel => xRefModel.MemberDefModels,
                 (inputModel, memberDefModel) => new
                 {
-                    Id = inputModel.xRefModel.RowId,
+                    inputModel.xRefModel.RowId,
                     inputModel.xRefModel.SrcRowId,
                     inputModel.xRefModel.DstRowId,
                     memberDefModel.Type,
