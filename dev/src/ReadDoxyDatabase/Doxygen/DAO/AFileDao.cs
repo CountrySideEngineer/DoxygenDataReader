@@ -58,7 +58,7 @@ namespace Doxygen.DAO
             {
                 FileDto dto = new FileDto()
                 {
-                    Id = item.Id,
+                    Id = item.FileId,
                     Name = item.Name,
                     Path = item.Path
                 };
