@@ -39,7 +39,7 @@ foreach (var item in functions)
     Console.WriteLine($"\tDEFIN : {funcItem.Definition}");
 
     int argIndex = 0;
-    foreach (var argItem in funcItem.Arguments)
+    foreach (var argItem in funcItem.Arguments ?? new List<ParamDtoBase>())
     {
         Console.WriteLine($"\tArgIndex = {(argIndex + 1), 3}");
         Console.WriteLine($"\t\tTYPE : {argItem.Type}");
@@ -48,7 +48,7 @@ foreach (var item in functions)
     }
 
     int subFuncIndex = 0;
-    foreach (var subFunc in funcItem.SubFunctions)
+    foreach (var subFunc in funcItem.SubFunctions ?? new List<FunctionDto>())
     {
         Console.WriteLine($"\tSubFunc = {(subFuncIndex + 1), 3}");
         Console.WriteLine($"\t\t   ID : {subFunc.Id, 3}");
@@ -58,7 +58,7 @@ foreach (var item in functions)
     }
 
     int globalVarIndex = 0;
-    foreach (var glovalVar in funcItem.GlobalVariables)
+    foreach (var glovalVar in funcItem.GlobalVariables ?? new List<ParamDtoBase>())
     {
         Console.WriteLine($"\tGlobal variable = {(globalVarIndex + 1), 3}");
         Console.WriteLine($"\t\t   ID : {glovalVar.Id,3}");
