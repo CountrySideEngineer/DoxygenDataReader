@@ -30,42 +30,6 @@ namespace Doxygen.DAO
                 .ToList();
 
             return memberDefModels;
-
-            //var memberDefModels = doxygenContext.MemberDefModels;
-            //var memberDefParamModels = doxygenContext.MemberDefParamModels;
-
-            //var functions = memberDefModels.GroupJoin(
-            //    memberDefParamModels,
-            //    memberDefModel => memberDefModel.RowId,
-            //    memberDefParamModel => memberDefParamModel.MemberDefId,
-            //    (memberDefModel, memberDefParamModelCollection) => new
-            //    {
-            //        memberDefModel,
-            //        memberDefParamModelCollection
-            //    }
-            //    )
-            //    .SelectMany(
-            //    inputModel => inputModel.memberDefParamModelCollection,
-            //    (inputModel, memberDefParamModelItem) => new
-            //    {
-            //        Id = inputModel.memberDefModel.RowId,
-            //        inputModel.memberDefModel.Type,
-            //        inputModel.memberDefModel.Name,
-            //        DeclName = inputModel.memberDefModel.ArgsString,
-            //        inputModel.memberDefModel.Definition,
-            //        inputModel.memberDefModel.Kind,
-            //        inputModel.memberDefModel.Scope,
-            //        inputModel.memberDefModel.BodyFileId,
-            //        inputModel.memberDefModel.FileId,
-            //        memberDefParamModelItem.MemberDefId,
-            //        memberDefParamModelItem.ParamId,
-            //    }
-            //    )
-            //    .Where(_ => _.Kind.ToLower().Equals("function"))
-            //    .ToList()
-            //    .DistinctBy(_ => _.MemberDefId);
-
-            //return functions;
         }
 
         protected virtual IEnumerable<ParamDtoBase> ConvertToDto(IEnumerable<dynamic> functions)
