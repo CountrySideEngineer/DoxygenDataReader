@@ -16,17 +16,17 @@ namespace Doxygen.DAO
         /// </summary>
         public FunctionByFileDao() : base() { }
 
-        protected virtual IEnumerable<dynamic> GetFunction(int fileId, DbContext context)
-        {
-            IEnumerable<dynamic> functions = base.GetFunction(context).Where(_ => _.BodyFileId.Equals(fileId));
-
-            return functions;
-        }
-
+        /// <summary>
+        /// Get functions specified by an id the functions are implemeted in.\
+        /// </summary>
+        /// <param name="fileId">Id of file the functions are implemented.</param>
+        /// <param name="context">Data base context.</param>
+        /// <returns>Collection of functions implemented source code file specified by argument fileId.</returns>
         public override IEnumerable<ParamDtoBase> GetById(int fileId, DbContext context)
         {
-            IEnumerable<dynamic> functions = GetFunction(fileId, context);
-            IEnumerable<ParamDtoBase> dtos = ConvertToDto(functions);
+            IEnumerable<dynamic> allFunctions = GetFunction(context);
+            IEnumerable<dynamic> specifiedFunctions = allFunctions.Where(_ => _.BodyFileId.Equals(fileId));
+            IEnumerable<ParamDtoBase> dtos = ConvertToDto(specifiedFunctions);
 
             SetupParameters(ref dtos, context);
 
