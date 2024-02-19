@@ -21,6 +21,17 @@ foreach (var item in files)
     Console.WriteLine($"\t  ID : {fileItem.Id, 3}");
     Console.WriteLine($"\tNAME : {fileItem.Name}");
     Console.WriteLine($"\tPATH : {fileItem.Path}");
+
+    var funcDao = new FunctionByFileDao();
+    IEnumerable<ParamDtoBase> _funcs = funcDao.GetById(fileItem.Id);
+    foreach (var funcItem in _funcs)
+    {
+        Console.WriteLine($"\t\tName = {funcItem.Name}");
+    }
+
+    index++;
+    
+
 }
 Console.WriteLine();
 Console.WriteLine();
