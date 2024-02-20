@@ -20,6 +20,11 @@ namespace Doxygen.DAO
         /// </summary>
         public FunctionDao() { }
 
+        /// <summary>
+        /// Returns collection of function read from data base.
+        /// </summary>
+        /// <param name="context">Data base conext.</param>
+        /// <returns>Collection of function read from data base.</returns>
         protected virtual IEnumerable<dynamic> GetFunction(DbContext context)
         {
             DoxygenDbContext doxygenContext = (DoxygenDbContext)context;
@@ -32,6 +37,11 @@ namespace Doxygen.DAO
             return memberDefModels;
         }
 
+        /// <summary>
+        /// Convert collection of function read from data base into that of FunctionDto, inherits ParamDtoBase class.
+        /// </summary>
+        /// <param name="functions">Collection of function read from data base.</param>
+        /// <returns>Collection of ParamDtoBase object which contains function information.</returns>
         protected virtual IEnumerable<ParamDtoBase> ConvertToDto(IEnumerable<dynamic> functions)
         {
             var dtos = new List<FunctionDto>();
@@ -138,6 +148,12 @@ namespace Doxygen.DAO
             return functions;
         }
 
+        /// <summary>
+        /// Returns arguments, subfunctions, and global variables a function specified by an id refers.
+        /// </summary>
+        /// <param name="referId">Function id</param>
+        /// <param name="context">Data base context.</param>
+        /// <returns>Arguments, sub functions, and global varialbe information in tuple.</returns>
         protected virtual
             (IEnumerable<ParamDtoBase> arguments, 
             IEnumerable<ParamDtoBase> subFunctions, 
@@ -151,6 +167,11 @@ namespace Doxygen.DAO
             return (arguments, subFunctions, globalVariables);
         }
 
+        /// <summary>
+        /// Setup parameters to a functin in the collection.
+        /// </summary>
+        /// <param name="dtos">Collection of function information in ParamDtoBase object.</param>
+        /// <param name="context">Data base context.</param
         protected virtual void SetupParameters(ref IEnumerable<ParamDtoBase> dtos, DbContext context)
         {
             var doxygenContext = (DoxygenDbContext)context;
