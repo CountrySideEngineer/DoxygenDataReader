@@ -30,8 +30,7 @@ namespace Doxygen.DAO
             DoxygenDbContext doxygenContext = (DoxygenDbContext)context;
             var memberDefModels = doxygenContext.MemberDefModels
                 .Where(
-                    _ => _.Kind.ToLower().Equals("function") &&
-                    (_.BodyFileId.Equals(_.FileId)))
+                    _ => _.Kind.ToLower().Equals("function"))
                 .ToList();
 
             return memberDefModels;
