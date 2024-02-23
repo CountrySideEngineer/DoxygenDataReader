@@ -39,6 +39,12 @@ namespace Doxygen.DAO
             throw new NotSupportedException();
         }
 
+        /// <summary>
+        /// Get global variables a function specified by id refers.
+        /// </summary>
+        /// <param name="funcId">Function id</param>
+        /// <param name="context">Data base context.</param>
+        /// <returns>Collection of </returns>
         protected virtual IEnumerable<dynamic> GetGlobalVariable(int funcId, DbContext context)
         {
             var doxygenDbContext = (DoxygenDbContext)context;
@@ -78,6 +84,12 @@ namespace Doxygen.DAO
             return globalVariables;
         }
 
+        /// <summary>
+        /// Get collection of global variables a function specified by id refers.
+        /// </summary>
+        /// <param name="funcId">Function id.</param>
+        /// <param name="context">Data base context.</param>
+        /// <returns>Collection of global variables in ParamDtoBase object.</returns>
         public override IEnumerable<ParamDtoBase> GetById(int funcId, DbContext context)
         {
             IEnumerable<dynamic> globalVariables = GetGlobalVariable(funcId, context);
