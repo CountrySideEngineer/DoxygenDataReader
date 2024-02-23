@@ -26,7 +26,7 @@ namespace Doxygen.DAO
         {
             DoxygenDbContext doxygenContext = (DoxygenDbContext)dbContext;
             var memberDefModels = doxygenContext.MemberDefModels
-                .Where(_ => _.Kind.Equals("variable") && _.Scope == null)
+                .Where(_ => _.Kind.Equals("variable") && (_.Scope == null) && (_.BodyFileId != null))
                 .ToList();
 
             return memberDefModels;

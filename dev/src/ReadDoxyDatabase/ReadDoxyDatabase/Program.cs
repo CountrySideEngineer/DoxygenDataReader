@@ -29,6 +29,13 @@ foreach (var item in files)
         Console.WriteLine($"\t\tName = {funcItem.Name}");
     }
 
+    var globalVarDao = new GlobalVarialbeByFileDao();
+    IEnumerable<ParamDtoBase> _globalVars = globalVarDao.GetById(fileItem.Id);
+    foreach (var _globalVarItem in _globalVars)
+    {
+        Console.WriteLine($"\t\tName = {_globalVarItem.Name}");
+    }
+
     index++;
     
 
