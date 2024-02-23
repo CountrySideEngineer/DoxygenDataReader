@@ -16,7 +16,7 @@ namespace Doxygen.DTO
         /// <summary>
         /// Global variable definition.
         /// </summary>
-        public string Definition { get; set; }
+        public string Definition { get; set; } = string.Empty;
 
         /// <summary>
         /// Scope of the varlable.
