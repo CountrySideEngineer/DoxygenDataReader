@@ -24,7 +24,7 @@ namespace Doxygen.DAO
         public override IEnumerable<ParamDtoBase> GetById(int id, DbContext context)
         {
             IEnumerable<dynamic> globalVarialbles = GetGlobalVariable(context);
-            IEnumerable<dynamic> specifiedGlobalVariables = globalVarialbles.Where(_ => _.BodyFileId.Equals(id));
+            IEnumerable<dynamic> specifiedGlobalVariables = globalVarialbles.Where(_ => _.FileId.Equals(id));
             IEnumerable<ParamDtoBase> dtos = ConvertToDto(specifiedGlobalVariables);
 
             return dtos;
