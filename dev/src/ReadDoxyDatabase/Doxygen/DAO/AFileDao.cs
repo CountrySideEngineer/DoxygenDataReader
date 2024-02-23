@@ -1,15 +1,17 @@
 ﻿using Doxygen.DB;
 using Doxygen.DTO;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Doxygen.DAO
 {
-    public abstract class AFileDao
+    public abstract class AFileDao : ADao
     {
         /// <summary>
         /// Abstract method which returns file extension.
@@ -22,50 +24,62 @@ namespace Doxygen.DAO
         /// </summary>
         public AFileDao() { }
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<FileDto> GetAll()
+        protected virtual IQueryable<dynamic> GetFiles(DbContext context)
         {
-            using (var context = new DoxygenDbContext())
-            {
-                context.Database.EnsureCreated();
+            DoxygenDbContext doxygenContext = (DoxygenDbContext)context;
 
-                var pathModels = context.PathModels;
-                var compoundDefModels = context.CompoundDefModels;
-                var files = compoundDefModels.Join(
-                    pathModels,
-                    compound => compound.FileId,
-                    path => path.RowId,
-                    (compound, path) => new
-                    {
-                        Id = compound.RowId,
-                        Name = compound.Name,
-                        Path = path.Name,
-                        Kind = compound.Kind
-                    }
-                    )
-                    .Where(_ =>
-                        _.Kind.Equals("file") &&
-                        _.Path
-                            .Substring(_.Path.Length - GetFileExtension().Length,
-                                GetFileExtension().Length)
-                            .ToLower()
-                            .Equals(GetFileExtension()));
-
-                var fileDtos = new List<FileDto>();
-                foreach (var item in files)
+            var pathModels = doxygenContext.PathModels;
+            var compoundDefModels = doxygenContext.CompoundDefModels;
+            var files = compoundDefModels.Join(
+                pathModels,
+                compound => compound.FileId,
+                path => path.RowId,
+                (compound, path) => new
                 {
-                    var dto = new FileDto()
-                    {
-                        Id = item.Id,
-                        Name = item.Name,
-                        Path = item.Path
-                    };
-                    fileDtos.Add(dto);
-                }
-                return fileDtos;
+                    Id = compound.RowId,
+                    Name = compound.Name,
+                    Path = path.Name,
+                    Kind = compound.Kind,
+                    FileId = compound.FileId,
+                })
+                .Where(_ =>
+                    _.Kind.Equals("file") &&
+                    _.Path.Substring(
+                        _.Path.Length - GetFileExtension().Length,
+                        GetFileExtension().Length).ToLower().Equals(GetFileExtension()));
+
+            return files;
+        }
+
+        protected virtual IEnumerable<ParamDtoBase> ConvertToDto(dynamic files)
+        {
+            var fileDtos = new List<ParamDtoBase>();
+            foreach (var item in files)
+            {
+                FileDto dto = new FileDto()
+                {
+                    Id = item.FileId,
+                    Name = item.Name,
+                    Path = item.Path
+                };
+                fileDtos.Add(dto);
             }
+            return fileDtos;
+        }
+
+        /// <summary>
+        /// Read all file informatino from data base.
+        /// </summary>
+        /// <param name="context">Data base context.</param>
+        /// <returns>Collection of file information from data base.</returns>
+        public override IEnumerable<ParamDtoBase> GetAll(DbContext context)
+        {
+            context.Database.EnsureCreated();
+            var files = GetFiles(context);
+
+            IEnumerable<ParamDtoBase> fileDtos = ConvertToDto(files);
+
+            return fileDtos;
         }
     }
 }

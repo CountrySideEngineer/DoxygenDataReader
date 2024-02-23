@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Doxygen.DTO
 {
-    public class FileDto
+    public class FileDto : ParamDtoBase
     {
         /// <summary>
         /// Default constructor.
@@ -15,18 +15,13 @@ namespace Doxygen.DTO
         public FileDto() { }
 
         /// <summary>
-        /// ID in the table.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// File name.
-        /// </summary>
-        public string Name { get; set; } = string.Empty;
-
-        /// <summary>
         /// File full path.
         /// </summary>
         public string Path { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Collection of function information implemented in the file, as FunctionDto object.
+        /// </summary>
+        public IEnumerable<FunctionDto>? Functions { get; set; } = null;
     }
 }
