@@ -1,5 +1,6 @@
 ﻿using Doxygen.DB;
 using Doxygen.DTO;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,13 @@ namespace Doxygen.DAO
         /// </summary>
         public ParamDao() : base() { }
 
-        public override IEnumerable<ParamDtoBase> GetAll(DoxygenDbContext context)
+        public override IEnumerable<ParamDtoBase> GetAll(DbContext context)
         {
+            DoxygenDbContext doxygenContext = (DoxygenDbContext)context;
+
             context.Database.EnsureCreated();
 
-            var memberDefParamModels = context.MemberDefParamModels;
-            var paramModels = context.ParamModels;
+            var paramModels = doxygenContext.ParamModels;
             var parameters = paramModels.ToList();
 
             var dtos = new List<ParamDto>();

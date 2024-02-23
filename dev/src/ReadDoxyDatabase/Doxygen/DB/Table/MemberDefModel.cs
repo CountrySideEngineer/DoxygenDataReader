@@ -116,8 +116,8 @@ namespace Doxygen.DB.Table
         [Column("maybedefault")]
         public int? MaybeDefault { get; set; } = 0;
 
-        [Column("maybeambigous")]
-        public int? MaybeAmbigous { get; set; } = 0;
+        [Column("maybeambiguous")]
+        public int? MaybeAmbiguous { get; set; } = 0;
 
         [Column("readable")]
         public int? Readable { get; set; } = 0;
