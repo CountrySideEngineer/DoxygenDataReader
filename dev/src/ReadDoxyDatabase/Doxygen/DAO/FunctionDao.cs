@@ -1,10 +1,13 @@
 ﻿using Doxygen.DB;
 using Doxygen.DB.Table;
 using Doxygen.DTO;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,52 +21,56 @@ namespace Doxygen.DAO
         public FunctionDao() { }
 
         /// <summary>
+        /// Returns collection of function read from data base.
+        /// </summary>
+        /// <param name="context">Data base conext.</param>
+        /// <returns>Collection of function read from data base.</returns>
+        protected virtual IEnumerable<dynamic> GetFunction(DbContext context)
+        {
+            DoxygenDbContext doxygenContext = (DoxygenDbContext)context;
+            var memberDefModels = doxygenContext.MemberDefModels
+                .Where(
+                    _ => _.Kind.ToLower().Equals("function"))
+                .ToList();
+
+            return memberDefModels;
+        }
+
+        /// <summary>
+        /// Convert collection of function read from data base into that of FunctionDto, inherits ParamDtoBase class.
+        /// </summary>
+        /// <param name="functions">Collection of function read from data base.</param>
+        /// <returns>Collection of ParamDtoBase object which contains function information.</returns>
+        protected virtual IEnumerable<ParamDtoBase> ConvertToDto(IEnumerable<dynamic> functions)
+        {
+            var dtos = new List<FunctionDto>();
+            foreach (var item in functions)
+            {
+                var dto = new FunctionDto()
+                {
+                    Id = item.RowId,
+                    Name = item.Name,
+                    Type = item.Type,
+                    Definition = item.Definition,
+                };
+                dtos.Add(dto);
+            }
+
+            return dtos;
+        }
+
+        /// <summary>
         /// Returns collection of arguments of a function specified by id.
         /// </summary>
         /// <param name="memberDefId">Function id</param>
         /// <param name="context">Data base context.</param>
         /// <returns>Collection of argument datas in ParamDto pbject.</returns>
-        protected virtual IEnumerable<ParamDto> GetArgumentsByIdOfFunc(int memberDefId, DoxygenDbContext context)
+        internal virtual IEnumerable<ParamDto> GetArgumentsByIdOfFunc(int memberDefId, DoxygenDbContext context)
         {
-            var memberDerParamModels = context.MemberDefParamModels;
-            var paramModels = context.ParamModels;
+            var dao = new ArgumentByFuncDao();
+            var arguemnts = (IEnumerable<ParamDto>)dao.GetById(memberDefId, context);
 
-            var argumentsModels = memberDerParamModels.Join(
-                paramModels,
-                memberDefParamModel => memberDefParamModel.ParamId,
-                paramModel => paramModel.RowId,
-                (memberDefParamModel, paramModel) => new
-                {
-                    Id = memberDefParamModel.RowId,
-                    memberDefParamModel.MemberDefId,
-                    memberDefParamModel.ParamId,
-                    paramModel.Attributes,
-                    paramModel.Type,
-                    Name = paramModel.DeclName,
-                    DefaultName = paramModel.DefName,
-                    paramModel.Array,
-                    DefaultValue = paramModel.DefVal,
-                    paramModel.BriefDescription
-                })
-                .Where(_ => _.MemberDefId == memberDefId);
-
-            var arguments = new List<ParamDto>();
-            foreach (var item in argumentsModels)
-            {
-                var dto = new ParamDto()
-                {
-                    Id = item.ParamId,
-                    Type = item.Type,
-                    Name = item.Name,
-                    DefaultName = item.DefaultName,
-                    Array = item.Array,
-                    DefaultValue = item.DefaultValue,
-                    BriefDescription = item.BriefDescription
-                };
-                arguments.Add(dto);
-            }
-
-            return arguments;
+            return arguemnts;
         }
 
         /// <summary>
@@ -72,7 +79,7 @@ namespace Doxygen.DAO
         /// <param name="referId">Function id</param>
         /// <param name="context">Data base context.</param>
         /// <returns>Collection of global varialbe the function refers.</returns>
-        protected virtual IEnumerable<ParamDto> GetGlobalVarialbesByIdOfFunc(int referId, DoxygenDbContext context)
+        internal virtual IEnumerable<ParamDto> GetGlobalVarialbesByIdOfFunc(int referId, DoxygenDbContext context)
         {
             var xRefsModels = context.XRefsModels;
             var memberDefModels = context.MemberDefModels;
@@ -132,117 +139,64 @@ namespace Doxygen.DAO
         /// <param name="callerId">Caller function id.</param>
         /// <param name="context">Data base context.</param>
         /// <returns>Collection of function in FunctionDto object.</returns>
-        protected virtual IEnumerable<FunctionDto> GetSubFunctionsById(int callerId, DoxygenDbContext context)
+        internal virtual IEnumerable<ParamDtoBase> GetSubFunctionsById(int callerId, DoxygenDbContext context)
         {
-            var xRefsModels = context.XRefsModels;
-            var memberDefModels = context.MemberDefModels;
-            var refIdModels = context.RefIdModels;
+            var dao = new FunctionCalledByDao();
+            var functions = dao.GetById(callerId, context);
 
-            var subFunctions = xRefsModels.GroupJoin(
-                memberDefModels,
-                xRefsModel => xRefsModel.SrcRowId,
-                memberDefModel => memberDefModel.RowId,
-                (xRefsModel, memberDefModelCollection) => new
-                {
-                    xRefsModel.RowId,
-                    xRefsModel.SrcRowId,
-                    xRefsModel.DstRowId,
-                    MemerDefModel = memberDefModelCollection
-                })
-                .SelectMany(
-                refModel => refModel.MemerDefModel,
-                (refModel, memberDefModel) => new
-                {
-                    Id = refModel.RowId,
-                    refModel.SrcRowId,
-                    refModel.DstRowId,
-                    memberDefModel.Type,
-                    memberDefModel.Name,
-                    memberDefModel.Definition,
-                    memberDefModel.ArgsString,
-                    memberDefModel.Scope,
-                    memberDefModel.Kind,
-                    memberDefModel.FileId,
-                    memberDefModel.BodyFileId
-                })
-                .Where(_ => _.SrcRowId.Equals(callerId) && (_.FileId.Equals(_.BodyFileId)))
-                .ToList();
+            return functions;
+        }
 
-            var dtos = new List<FunctionDto>();
-            foreach (var item in subFunctions)
+        /// <summary>
+        /// Returns arguments, subfunctions, and global variables a function specified by an id refers.
+        /// </summary>
+        /// <param name="referId">Function id</param>
+        /// <param name="context">Data base context.</param>
+        /// <returns>Arguments, sub functions, and global varialbe information in tuple.</returns>
+        protected virtual
+            (IEnumerable<ParamDtoBase> arguments, 
+            IEnumerable<ParamDtoBase> subFunctions, 
+            IEnumerable<ParamDtoBase> globalVariables) 
+            GetParameters(int referId, DoxygenDbContext context)
+        {
+            var arguments = GetArgumentsByIdOfFunc(referId, context);
+            var subFunctions = GetSubFunctionsById(referId, context);
+            var globalVariables = GetGlobalVarialbesByIdOfFunc(referId, context);
+
+            return (arguments, subFunctions, globalVariables);
+        }
+
+        /// <summary>
+        /// Setup parameters to a functin in the collection.
+        /// </summary>
+        /// <param name="dtos">Collection of function information in ParamDtoBase object.</param>
+        /// <param name="context">Data base context.</param
+        protected virtual void SetupParameters(ref IEnumerable<ParamDtoBase> dtos, DbContext context)
+        {
+            var doxygenContext = (DoxygenDbContext)context;
+
+            foreach (var item in dtos)
             {
-                var arguments = GetArgumentsByIdOfFunc(item.DstRowId, context);
-                var dto = new FunctionDto()
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Type = item.Type,
-                    Definition = item.Definition,
-                    Arguments = arguments
-                };
-                dtos.Add(dto);
+                (IEnumerable<ParamDtoBase> arguments,
+                IEnumerable<ParamDtoBase> subFunctions,
+                IEnumerable<ParamDtoBase> globalVariables) = GetParameters(item.Id, doxygenContext);
+
+                ((FunctionDto)item).Arguments = arguments;
+                ((FunctionDto)item).SubFunctions = (IEnumerable<FunctionDto>)subFunctions;
+                ((FunctionDto)item).GlobalVariables = globalVariables;
             }
-            return dtos;
         }
 
         /// <summary>
         /// Returns all function registered in data base.
         /// </summary>
         /// <returns>Collection of function data in FunctinoDto object.</returns>
-        public override IEnumerable<ParamDtoBase> GetAll(DoxygenDbContext context)
+        public override IEnumerable<ParamDtoBase> GetAll(DbContext context)
         {
-            context.Database.EnsureCreated();
+            IEnumerable<dynamic> functions = GetFunction(context);
+            IEnumerable<ParamDtoBase> dtos = ConvertToDto(functions);
 
-            var memberDefParamModels = context.MemberDefParamModels;
-            var memberDefModels = context.MemberDefModels;
-
-            var functions = memberDefParamModels.GroupJoin(
-                memberDefModels,
-                memberDefParamModel => memberDefParamModel.MemberDefId,
-                memberDefModel => memberDefModel.RowId,
-                (memberDefParamModel, memberDefModelCollection) => new
-                {
-                    memberDefParamModel.RowId,
-                    memberDefParamModel.MemberDefId,
-                    memberDefParamModel.ParamId,
-                    memeberDefs = memberDefModelCollection
-                })
-                .SelectMany(x => x.memeberDefs, (x, memberDefs) => new
-                {
-                    Id = x.RowId,
-                    MemberId = x.MemberDefId,
-                    ParamId = x.ParamId,
-                    Type = memberDefs.Type,
-                    Name = memberDefs.Name,
-                    DeclName = memberDefs.ArgsString,
-                    Definition = memberDefs.Definition,
-                    Kind = memberDefs.Kind,
-                    memberDefs.Scope
-                })
-                .Where(_ => _.Kind.ToLower().Equals("function"))
-                .ToList()
-                .DistinctBy(_ => _.MemberId);
-
-            var dtos = new List<FunctionDto>();
-            foreach (var item in functions)
-            {
-                var arguments = GetArgumentsByIdOfFunc(item.MemberId, context);
-                var subFunctions = GetSubFunctionsById(item.MemberId, context);
-                var glovalVariables = GetGlobalVarialbesByIdOfFunc(item.MemberId, context);
-
-                var dto = new FunctionDto()
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Type = item.Type,
-                    Definition = item.Definition,
-                    Arguments = arguments,
-                    SubFunctions = subFunctions,
-                    GlobalVariables = glovalVariables,
-                    Scope = item.Scope
-                };
-                dtos.Add(dto);
-            }
+            SetupParameters(ref dtos, context);
 
             return dtos;
         }

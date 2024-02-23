@@ -18,5 +18,10 @@ namespace Doxygen.DTO
         /// File full path.
         /// </summary>
         public string Path { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Collection of function information implemented in the file, as FunctionDto object.
+        /// </summary>
+        public IEnumerable<FunctionDto>? Functions { get; set; } = null;
     }
 }
