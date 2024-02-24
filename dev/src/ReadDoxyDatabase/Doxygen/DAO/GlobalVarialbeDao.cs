@@ -48,7 +48,7 @@ namespace Doxygen.DAO
                     Name = variable.Name,
                     Type = variable.Type,
                     Definition = variable.Definition,
-                    ArrayString = variable.ArgsString,
+                    Array = variable.ArgsString,
                     Initialize = variable.Initializer,
                 };
                 dtos.Add(dto);

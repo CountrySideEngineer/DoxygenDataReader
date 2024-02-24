@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Doxygen.DTO
 {
-    public class VariableDto : ParamDtoBase
+    public class VariableDto : ParamDto
     {
         /// <summary>
         /// Default constructor.
@@ -17,16 +17,6 @@ namespace Doxygen.DTO
         /// Global variable definition.
         /// </summary>
         public string Definition { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Scope of the varlable.
-        /// </summary>
-        public string? Scope { get; set; }
-
-        /// <summary>
-        /// String about variable definition as array.
-        /// </summary>
-        public string? ArrayString { get; set; }
 
         /// <summary>
         /// Codes to initialize the variable.
