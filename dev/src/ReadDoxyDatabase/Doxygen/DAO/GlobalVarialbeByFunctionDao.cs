@@ -78,8 +78,7 @@ namespace Doxygen.DAO
                     memberDefModel.BodyFileId
                 })
                 .Where(_ => _.SrcRowId.Equals(funcId) &&
-                    _.Kind.ToLower().Equals("variables"))
-                .ToList();
+                    _.Kind.ToLower().Equals("variables"));
 
             return globalVariables;
         }
