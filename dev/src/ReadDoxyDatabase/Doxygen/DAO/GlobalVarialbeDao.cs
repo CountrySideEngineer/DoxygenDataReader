@@ -39,7 +39,7 @@ namespace Doxygen.DAO
         /// <returns>Collection of VariableDto object contains </returns>
         protected virtual IEnumerable<ParamDtoBase> ConvertToDto(IEnumerable<dynamic> globalVariables)
         {
-            var dtos = new List<ParamDtoBase>();
+            var dtos = new List<ParamDto>();
             foreach (var variable in globalVariables)
             {
                 var dto = new VariableDto()
