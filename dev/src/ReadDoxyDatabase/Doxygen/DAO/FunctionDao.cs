@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,58 +80,12 @@ namespace Doxygen.DAO
         /// <param name="referId">Function id</param>
         /// <param name="context">Data base context.</param>
         /// <returns>Collection of global varialbe the function refers.</returns>
-        internal virtual IEnumerable<ParamDto> GetGlobalVarialbesByIdOfFunc(int referId, DoxygenDbContext context)
+        internal virtual IEnumerable<ParamDto> GetGlobalVariablesByIdOfFunc(int referId, DoxygenDbContext context)
         {
-            var xRefsModels = context.XRefsModels;
-            var memberDefModels = context.MemberDefModels;
+            var dao = new GlobalVarialbeByFunctionDao();
+            var variables = (IEnumerable<ParamDto>)dao.GetById(referId);
 
-            var globalVarialbeModels = xRefsModels.GroupJoin(
-                memberDefModels,
-                xRefsModel => xRefsModel.SrcRowId,
-                memberDefModel => memberDefModel.RowId,
-                (xRefsModel, memberDefModelCollection) => new
-                {
-                    Id = xRefsModel.RowId,
-                    xRefsModel.SrcRowId,
-                    xRefsModel.DstRowId,
-                    MemberDefModel = memberDefModelCollection
-                })
-                .SelectMany(
-                    refModel => refModel.MemberDefModel,
-                    (refModel, memberDefModel) => new
-                    {
-                        refModel.Id,
-                        refModel.SrcRowId,
-                        refModel.DstRowId,
-                        memberDefModel.Type,
-                        memberDefModel.Name,
-                        memberDefModel.Definition,
-                        memberDefModel.Scope,
-                        memberDefModel.Kind,
-                        memberDefModel.FileId,
-                        memberDefModel.BodyFileId
-                    }
-                )
-                .Where(_ => _.SrcRowId.Equals(referId) &&
-                    (_.BodyFileId.Equals(_.FileId)) &&
-                    (_.Kind.ToLower().Equals("variable")))
-                .ToList()
-                .DistinctBy(_ => _.Name);
-
-            var dtos = new List<ParamDto>();
-            foreach (var item in globalVarialbeModels)
-            {
-                var dto = new ParamDto()
-                {
-                    Id = item.Id,
-                    Type = item.Type,
-                    Name = item.Name,
-                    Scope = item.Scope
-                };
-                dtos.Add(dto);
-            }
-
-            return dtos;
+            return variables;
         }
 
         /// <summary>
@@ -161,7 +116,7 @@ namespace Doxygen.DAO
         {
             var arguments = GetArgumentsByIdOfFunc(referId, context);
             var subFunctions = GetSubFunctionsById(referId, context);
-            var globalVariables = GetGlobalVarialbesByIdOfFunc(referId, context);
+            var globalVariables = GetGlobalVariablesByIdOfFunc(referId, context);
 
             return (arguments, subFunctions, globalVariables);
         }
