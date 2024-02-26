@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B94A1703-3106-4E54-A064-6BE299F2CDA2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Doxygen</RootNamespace>
+    <AssemblyName>Doxygen</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;USING_DOT_NET</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\ADao.cs">
+      <Link>DAO\ADao.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\AFileDao.cs">
+      <Link>DAO\AFileDao.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\ArgumentByFuncDao.cs">
+      <Link>DAO\ArgumentByFuncDao.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\ArgumentDao.cs">
+      <Link>DAO\ArgumentDao.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\CppSourceFileDao.cs">
+      <Link>DAO\CppSourceFileDao.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\CSourceFileDao.cs">
+      <Link>DAO\CSourceFileDao.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\FunctionByFileDao.cs">
+      <Link>DAO\FunctionByFileDao.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\FunctionCalledByDao.cs">
+      <Link>DAO\FunctionCalledByDao.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\FunctionDao.cs">
+      <Link>DAO\FunctionDao.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\GlobalVarialbeByFileDao.cs">
+      <Link>DAO\GlobalVarialbeByFileDao.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\GlobalVarialbeByFunctionDao.cs">
+      <Link>DAO\GlobalVarialbeByFunctionDao.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\GlobalVarialbeDao.cs">
+      <Link>DAO\GlobalVarialbeDao.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\ParamDao.cs">
+      <Link>DAO\ParamDao.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\DoxygenDbContext.cs">
+      <Link>DB\DoxygenDbContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\CompoundDefModel.cs">
+      <Link>DB\Table\CompoundDefModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\CompoundRefModel.cs">
+      <Link>DB\Table\CompoundRefModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\ContainsModel.cs">
+      <Link>DB\Table\ContainsModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\IncludesModel.cs">
+      <Link>DB\Table\IncludesModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\MemberDefModel.cs">
+      <Link>DB\Table\MemberDefModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\MemberDefParamModel.cs">
+      <Link>DB\Table\MemberDefParamModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\MemberModel.cs">
+      <Link>DB\Table\MemberModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\MetaModel.cs">
+      <Link>DB\Table\MetaModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\ParamModel.cs">
+      <Link>DB\Table\ParamModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\PathModel.cs">
+      <Link>DB\Table\PathModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\RefIdModel.cs">
+      <Link>DB\Table\RefIdModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\ReimplementsModel.cs">
+      <Link>DB\Table\ReimplementsModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\XRefsModel.cs">
+      <Link>DB\Table\XRefsModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DTO\FileDto.cs">
+      <Link>DTO\FileDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DTO\FunctionDto.cs">
+      <Link>DTO\FunctionDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DTO\ParamDto.cs">
+      <Link>DTO\ParamDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DTO\ParamDtoBase.cs">
+      <Link>DTO\ParamDtoBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DTO\VariableDto.cs">
+      <Link>DTO\VariableDto.cs</Link>
+    </Compile>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EntityFramework">
+      <Version>6.4.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Data.Sqlite">
+      <Version>8.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="SQLite">
+      <Version>3.13.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite">
+      <Version>1.0.118</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite.EF6">
+      <Version>1.0.118</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite.EF6.Migrations">
+      <Version>1.0.113</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
