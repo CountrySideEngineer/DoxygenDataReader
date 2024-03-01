@@ -44,103 +44,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\ADao.cs">
-      <Link>DAO\ADao.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\AFileDao.cs">
-      <Link>DAO\AFileDao.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\ArgumentByFuncDao.cs">
-      <Link>DAO\ArgumentByFuncDao.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\ArgumentDao.cs">
-      <Link>DAO\ArgumentDao.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\CppSourceFileDao.cs">
-      <Link>DAO\CppSourceFileDao.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\CSourceFileDao.cs">
-      <Link>DAO\CSourceFileDao.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\FunctionByFileDao.cs">
-      <Link>DAO\FunctionByFileDao.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\FunctionCalledByDao.cs">
-      <Link>DAO\FunctionCalledByDao.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\FunctionDao.cs">
-      <Link>DAO\FunctionDao.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\GlobalVarialbeByFileDao.cs">
-      <Link>DAO\GlobalVarialbeByFileDao.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\GlobalVarialbeByFunctionDao.cs">
-      <Link>DAO\GlobalVarialbeByFunctionDao.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\GlobalVarialbeDao.cs">
-      <Link>DAO\GlobalVarialbeDao.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DAO\ParamDao.cs">
-      <Link>DAO\ParamDao.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\DoxygenDbContext.cs">
-      <Link>DB\DoxygenDbContext.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\CompoundDefModel.cs">
-      <Link>DB\Table\CompoundDefModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\CompoundRefModel.cs">
-      <Link>DB\Table\CompoundRefModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\ContainsModel.cs">
-      <Link>DB\Table\ContainsModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\IncludesModel.cs">
-      <Link>DB\Table\IncludesModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\MemberDefModel.cs">
-      <Link>DB\Table\MemberDefModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\MemberDefParamModel.cs">
-      <Link>DB\Table\MemberDefParamModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\MemberModel.cs">
-      <Link>DB\Table\MemberModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\MetaModel.cs">
-      <Link>DB\Table\MetaModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\ParamModel.cs">
-      <Link>DB\Table\ParamModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\PathModel.cs">
-      <Link>DB\Table\PathModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\RefIdModel.cs">
-      <Link>DB\Table\RefIdModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\ReimplementsModel.cs">
-      <Link>DB\Table\ReimplementsModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DB\Table\XRefsModel.cs">
-      <Link>DB\Table\XRefsModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DTO\FileDto.cs">
-      <Link>DTO\FileDto.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DTO\FunctionDto.cs">
-      <Link>DTO\FunctionDto.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DTO\ParamDto.cs">
-      <Link>DTO\ParamDto.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DTO\ParamDtoBase.cs">
-      <Link>DTO\ParamDtoBase.cs</Link>
-    </Compile>
-    <Compile Include="..\..\ReadDoxyDatabase\Doxygen\DTO\VariableDto.cs">
-      <Link>DTO\VariableDto.cs</Link>
-    </Compile>
     <Compile Include="Class1.cs" />
+    <Compile Include="DAO\ADao.cs" />
+    <Compile Include="DAO\AFileDao.cs" />
+    <Compile Include="DAO\ArgumentByFuncDao.cs" />
+    <Compile Include="DAO\ArgumentDao.cs" />
+    <Compile Include="DAO\CppSourceFileDao.cs" />
+    <Compile Include="DAO\CSourceFileDao.cs" />
+    <Compile Include="DAO\FunctionByFileDao.cs" />
+    <Compile Include="DAO\FunctionCalledByDao.cs" />
+    <Compile Include="DAO\FunctionDao.cs" />
+    <Compile Include="DAO\GlobalVarialbeByFileDao.cs" />
+    <Compile Include="DAO\GlobalVarialbeByFunctionDao.cs" />
+    <Compile Include="DAO\GlobalVarialbeDao.cs" />
+    <Compile Include="DAO\ParamDao.cs" />
+    <Compile Include="DB\DoxygenDbContext.cs" />
+    <Compile Include="DB\Table\CompoundDefModel.cs" />
+    <Compile Include="DB\Table\CompoundRefModel.cs" />
+    <Compile Include="DB\Table\ContainsModel.cs" />
+    <Compile Include="DB\Table\IncludesModel.cs" />
+    <Compile Include="DB\Table\MemberDefModel.cs" />
+    <Compile Include="DB\Table\MemberDefParamModel.cs" />
+    <Compile Include="DB\Table\MemberModel.cs" />
+    <Compile Include="DB\Table\MetaModel.cs" />
+    <Compile Include="DB\Table\ParamModel.cs" />
+    <Compile Include="DB\Table\PathModel.cs" />
+    <Compile Include="DB\Table\RefIdModel.cs" />
+    <Compile Include="DB\Table\ReimplementsModel.cs" />
+    <Compile Include="DB\Table\XRefsModel.cs" />
+    <Compile Include="DTO\FileDto.cs" />
+    <Compile Include="DTO\FunctionDto.cs" />
+    <Compile Include="DTO\ParamDto.cs" />
+    <Compile Include="DTO\ParamDtoBase.cs" />
+    <Compile Include="DTO\VariableDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
