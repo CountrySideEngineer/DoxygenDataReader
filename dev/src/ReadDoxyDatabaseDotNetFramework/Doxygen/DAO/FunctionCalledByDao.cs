@@ -69,20 +69,19 @@ namespace Doxygen.DAO
                     inputModel.xRefModel.RowId,
                     inputModel.xRefModel.SrcRowId,
                     inputModel.xRefModel.DstRowId,
-                    memberDefModel.Type,
-                    memberDefModel.Name,
-                    memberDefModel.Definition,
-                    memberDefModel.ArgsString,
-                    memberDefModel.Scope,
+                    Type = memberDefModel.Type ?? string.Empty,
+                    Name = memberDefModel.Name ?? string.Empty,
+                    Definition = memberDefModel.Definition ?? string.Empty,
+                    ArgsString =  memberDefModel.ArgsString ?? string.Empty,
+                    Scope = memberDefModel.Scope ?? string.Empty,
                     memberDefModel.Kind,
                     memberDefModel.FileId,
-                    memberDefModel.BodyFileId
-                }).ToList();
-                //.Where(_ =>
-                //    _.SrcRowId.Equals(callerId) &&
-                //    (_.FileId.Equals(_.BodyFileId)) &&
-                //    (_.Kind.ToLower().Equals("function")))
-                //.ToList();
+                    BodyFileId = memberDefModel.BodyFileId ?? 0,
+                })
+                .Where(_ =>
+                    _.SrcRowId.Equals(callerId) &&
+                    (_.FileId.Equals(_.BodyFileId)) &&
+                    (_.Kind.ToLower().Equals("function")));
 
             return functions;
         }
