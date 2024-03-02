@@ -28,6 +28,9 @@ namespace Doxygen.DAO
         {
             DoxygenDbContext doxygenContext = (DoxygenDbContext)context;
 
+            string fileExt = GetFileExtension();
+            int fileExtLen = fileExt.Length;
+
             var pathModels = doxygenContext.PathModels;
             var compoundDefModels = doxygenContext.CompoundDefModels;
             var files = compoundDefModels.Join(
@@ -43,7 +46,10 @@ namespace Doxygen.DAO
                     FileId = compound.FileId,
                 })
                 .Where(_ =>
-                    _.Kind.Equals("file"));
+                    _.Kind.Equals("file") &&
+                    _.Path.Substring(
+                        _.Path.Length - fileExtLen,
+                        fileExtLen).ToLower().Equals(fileExt));
 
             return files;
         }
