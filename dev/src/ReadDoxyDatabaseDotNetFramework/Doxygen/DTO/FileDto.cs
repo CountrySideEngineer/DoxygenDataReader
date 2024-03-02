@@ -9,6 +9,7 @@ namespace Doxygen.DTO
 {
     public class FileDto : ParamDtoBase
     {
+#nullable enable
         /// <summary>
         /// Default constructor.
         /// </summary>

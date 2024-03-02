@@ -11,6 +11,7 @@ namespace Doxygen.DB.Table
     [Table("compounddef")]
     public class CompoundDefModel
     {
+#nullable enable
         [Key]
         [Column("rowid")]
         public int RowId { get; set; }

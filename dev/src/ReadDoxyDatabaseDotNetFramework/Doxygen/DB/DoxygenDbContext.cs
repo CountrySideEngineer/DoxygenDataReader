@@ -15,37 +15,17 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.SQLite.EF6;
 namespace Doxygen.DB
 {
-    public class SQLiteConfiguration : DbConfiguration
-    {
-        public SQLiteConfiguration()
-        {
-            SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
-            SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance);
-            SetProviderServices("System.Data.SQLite", (DbProviderServices)SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)));
-        }
-    }
-
-
     public class DoxygenDbContext : DbContext
     {
         /// <summary>
         /// Path to data base.
         /// </summary>
-        public string Path { get; set; } = ".\\doxygen_sqlite3.db";
+        public string Path { get; set; } = @".\doxygen_sqlite3.db";
 
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public DoxygenDbContext() : base(
-            new SQLiteConnection()
-            {
-                ConnectionString = new SQLiteConnectionStringBuilder()
-                {
-                    DataSource = @".\doxygen_sqlite3.db",
-                    ForeignKeys = true
-                }.ConnectionString
-            },
-            true)
+        public DoxygenDbContext() : base()
         {
             Path = ".\\doxygen_sqlite3.db";
             DbConfiguration.SetConfiguration(new SQLiteConfiguration());
@@ -75,18 +55,5 @@ namespace Doxygen.DB
         public DbSet<RefIdModel> RefIdModels { get; set; }
         public DbSet<ReimplementsModel> ReimplementsModels { get; set; }
         public DbSet<XRefsModel> XRefsModels { get; set; }
-
-#if USING_DOT_NET
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
-#else
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            string connectionString = GetConenctionString();
-            optionsBuilder.UseSqlite(connectionString);
-        }
-#endif
     }
 }

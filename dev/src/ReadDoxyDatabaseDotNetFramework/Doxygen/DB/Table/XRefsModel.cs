@@ -11,6 +11,7 @@ namespace Doxygen.DB.Table
     [Table("xrefs")]
     public class XRefsModel
     {
+#nullable enable
         [Key]
         [Column("rowid")]
         public int RowId { get; set; }

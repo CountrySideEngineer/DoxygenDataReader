@@ -11,6 +11,7 @@ namespace Doxygen.DB.Table
     [Table("reimplements")]
     public class ReimplementsModel
     {
+#nullable enable
         [Key]
         [Column("rowid")]
         public int RowId { get; set; }

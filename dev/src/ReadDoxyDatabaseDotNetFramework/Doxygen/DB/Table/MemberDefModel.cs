@@ -15,6 +15,7 @@ namespace Doxygen.DB.Table
     [Table("memberdef")]
     public class MemberDefModel
     {
+#nullable enable
         [Key]
         [Column("rowid")]
         public int RowId { get; set; }

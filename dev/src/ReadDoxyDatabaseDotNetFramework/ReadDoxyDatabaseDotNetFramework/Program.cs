@@ -86,9 +86,6 @@ namespace ReadDoxyDatabaseDotNetFramework
                     Console.WriteLine($"\t\t NAME : {glovalVar.Name}");
                     globalVarIndex++;
                 }
-
-
-
                 Console.WriteLine();
 
                 index++;

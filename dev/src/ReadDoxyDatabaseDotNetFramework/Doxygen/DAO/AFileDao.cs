@@ -47,10 +47,7 @@ namespace Doxygen.DAO
                     FileId = compound.FileId,
                 })
                 .Where(_ =>
-                    _.Kind.Equals("file") &&
-                    _.Path.Substring(
-                        _.Path.Length - "cpp".Length,
-                        "cpp".Length).ToLower().Equals("cpp"));
+                    _.Kind.Equals("file"));
 
             return files;
         }

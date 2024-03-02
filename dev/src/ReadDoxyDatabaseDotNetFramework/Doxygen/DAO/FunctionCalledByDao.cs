@@ -84,12 +84,12 @@ namespace Doxygen.DAO
                     memberDefModel.Kind,
                     memberDefModel.FileId,
                     memberDefModel.BodyFileId
-                })
-                .Where(_ =>
-                    _.SrcRowId.Equals(callerId) &&
-                    (_.FileId.Equals(_.BodyFileId)) &&
-                    (_.Kind.ToLower().Equals("function")))
-                .ToList();
+                }).ToList();
+                //.Where(_ =>
+                //    _.SrcRowId.Equals(callerId) &&
+                //    (_.FileId.Equals(_.BodyFileId)) &&
+                //    (_.Kind.ToLower().Equals("function")))
+                //.ToList();
 
             return functions;
         }

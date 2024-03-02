@@ -11,6 +11,7 @@ namespace Doxygen.DB.Table
     [Table("includes")]
     public class IncludesModel
     {
+#nullable enable
         [Key]
         [Column("rowid")]
         public int RowId { get; set; }

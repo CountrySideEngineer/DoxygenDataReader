@@ -11,6 +11,7 @@ namespace Doxygen.DB.Table
     [Table("meta")]
     public class MetaModel
     {
+#nullable enable
         [Key]
         [Column("doxygen_version")]
         public string DoxygenVersion { get; set; } = string.Empty;

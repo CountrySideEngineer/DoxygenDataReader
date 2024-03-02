@@ -12,6 +12,7 @@ namespace Doxygen.DB.Table
     [Table("param")]
     public class ParamModel
     {
+#nullable enable
         [Key]
         [Column("rowid")]
         public int RowId { get; set; }

@@ -12,6 +12,7 @@ namespace Doxygen.DB.Table
     [Table("compoundref")]
     public class CompoundRefModel
     {
+#nullable enable
         [Key]
         [Column("rowid")]
         public int Rowid { get; set; }
