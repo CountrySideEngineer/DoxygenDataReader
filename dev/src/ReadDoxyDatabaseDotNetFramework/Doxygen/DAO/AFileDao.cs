@@ -1,10 +1,6 @@
 ﻿using Doxygen.DB;
 using Doxygen.DTO;
-#if USING_DOT_NET
 using System.Data.Entity;
-#else
-using Microsoft.EntityFrameworkCore;
-#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;

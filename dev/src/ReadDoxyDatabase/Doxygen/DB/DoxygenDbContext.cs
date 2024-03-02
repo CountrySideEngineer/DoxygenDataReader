@@ -13,7 +13,7 @@ namespace Doxygen.DB
         /// <summary>
         /// Path to data base.
         /// </summary>
-        public string Path { get; set; }
+        public string Path { get; set; } = @".\doxygen_sqlite3.db";
 
         /// <summary>
         /// Default constructor.

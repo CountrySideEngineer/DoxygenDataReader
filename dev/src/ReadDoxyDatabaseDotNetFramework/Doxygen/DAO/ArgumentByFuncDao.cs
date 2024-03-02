@@ -1,16 +1,8 @@
-﻿using Doxygen.DB;
-using Doxygen.DB.Table;
-using Doxygen.DTO;
-#if USING_DOT_NET
-using System.Data.Entity;
-#else
-using Microsoft.EntityFrameworkCore;
-#endif
-using System;
+﻿using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Doxygen.DB;
+using Doxygen.DTO;
 
 namespace Doxygen.DAO
 {
