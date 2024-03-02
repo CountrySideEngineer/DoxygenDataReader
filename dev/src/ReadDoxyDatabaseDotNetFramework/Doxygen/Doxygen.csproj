@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="DAO\ADao.cs" />
     <Compile Include="DAO\AFileDao.cs" />
     <Compile Include="DAO\ArgumentByFuncDao.cs" />
@@ -59,6 +58,7 @@
     <Compile Include="DAO\GlobalVarialbeDao.cs" />
     <Compile Include="DAO\ParamDao.cs" />
     <Compile Include="DB\DoxygenDbContext.cs" />
+    <Compile Include="DB\SQLiteConfiguration.cs" />
     <Compile Include="DB\Table\CompoundDefModel.cs" />
     <Compile Include="DB\Table\CompoundRefModel.cs" />
     <Compile Include="DB\Table\ContainsModel.cs" />
