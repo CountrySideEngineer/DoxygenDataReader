@@ -8,6 +8,7 @@ namespace Doxygen.DTO
 {
     public class VariableDto : ParamDto
     {
+#nullable enable
         /// <summary>
         /// Default constructor.
         /// </summary>
