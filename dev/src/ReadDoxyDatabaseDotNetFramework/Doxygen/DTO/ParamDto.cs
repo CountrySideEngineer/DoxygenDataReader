@@ -6,21 +6,22 @@ using System.Threading.Tasks;
 
 namespace Doxygen.DTO
 {
-    public class VariableDto : ParamDto
+    public class ParamDto : ParamDtoBase
     {
+#nullable enable
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public VariableDto() : base() { }
+        public ParamDto() : base() { }
 
         /// <summary>
-        /// Global variable definition.
+        /// Parameter array declare.
         /// </summary>
-        public string Definition { get; set; } = string.Empty;
+        public string? Array { get; set; }
 
         /// <summary>
-        /// Codes to initialize the variable.
+        /// Scope of parameter.
         /// </summary>
-        public string? Initialize { get; set; }
+        public string? Scope { get; set; }
     }
 }

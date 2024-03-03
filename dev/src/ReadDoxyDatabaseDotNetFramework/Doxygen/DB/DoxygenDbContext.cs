@@ -1,11 +1,14 @@
 ﻿using Doxygen.DB.Table;
-using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Data.SQLite;
+using System.Data.Entity.Core.Common;
+using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Data.SQLite.EF6;
 namespace Doxygen.DB
 {
     public class DoxygenDbContext : DbContext
@@ -21,6 +24,7 @@ namespace Doxygen.DB
         public DoxygenDbContext() : base()
         {
             Path = ".\\doxygen_sqlite3.db";
+            DbConfiguration.SetConfiguration(new SQLiteConfiguration());
         }
 
         /// <summary>
@@ -47,11 +51,5 @@ namespace Doxygen.DB
         public DbSet<RefIdModel> RefIdModels { get; set; }
         public DbSet<ReimplementsModel> ReimplementsModels { get; set; }
         public DbSet<XRefsModel> XRefsModels { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            string connectionString = GetConenctionString();
-            optionsBuilder.UseSqlite(connectionString);
-        }
     }
 }
