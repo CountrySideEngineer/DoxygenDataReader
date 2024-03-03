@@ -40,11 +40,7 @@ namespace Doxygen.DAO
         /// <returns></returns>
         public virtual IEnumerable<ParamDtoBase> GetAll()
         {
-#if USING_DOT_NET
             using (var context = new DoxygenDbContext())
-#else
-            using (var context = new DoxygenDbContext())
-#endif
             {
                 IEnumerable<ParamDtoBase> objects = GetAll(context);
 

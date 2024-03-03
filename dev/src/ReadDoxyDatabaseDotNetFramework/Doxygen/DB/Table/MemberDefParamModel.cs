@@ -1,9 +1,4 @@
-﻿#if USING_DOT_NET
-using System.Data.Entity;
-#else
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-#endif
+﻿using System.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

@@ -77,9 +77,6 @@ namespace Doxygen.DAO
         /// <returns>Collection of file information from data base.</returns>
         public override IEnumerable<ParamDtoBase> GetAll(DbContext context)
         {
-#if !USING_DOT_NET
-            context.Database.EnsureCreated();
-#endif
             var files = GetFiles(context);
 
             IEnumerable<ParamDtoBase> fileDtos = ConvertToDto(files);
