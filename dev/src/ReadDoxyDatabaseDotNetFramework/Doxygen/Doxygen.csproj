@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B94A1703-3106-4E54-A064-6BE299F2CDA2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Doxygen</RootNamespace>
+    <AssemblyName>Doxygen</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DAO\ADao.cs" />
+    <Compile Include="DAO\AFileDao.cs" />
+    <Compile Include="DAO\ArgumentByFuncDao.cs" />
+    <Compile Include="DAO\ArgumentDao.cs" />
+    <Compile Include="DAO\CppSourceFileDao.cs" />
+    <Compile Include="DAO\CSourceFileDao.cs" />
+    <Compile Include="DAO\FunctionByFileDao.cs" />
+    <Compile Include="DAO\FunctionCalledByDao.cs" />
+    <Compile Include="DAO\FunctionDao.cs" />
+    <Compile Include="DAO\GlobalVarialbeByFileDao.cs" />
+    <Compile Include="DAO\GlobalVarialbeByFunctionDao.cs" />
+    <Compile Include="DAO\GlobalVarialbeDao.cs" />
+    <Compile Include="DAO\ParamDao.cs" />
+    <Compile Include="DB\DoxygenDbContext.cs" />
+    <Compile Include="DB\SQLiteConfiguration.cs" />
+    <Compile Include="DB\Table\CompoundDefModel.cs" />
+    <Compile Include="DB\Table\CompoundRefModel.cs" />
+    <Compile Include="DB\Table\ContainsModel.cs" />
+    <Compile Include="DB\Table\IncludesModel.cs" />
+    <Compile Include="DB\Table\MemberDefModel.cs" />
+    <Compile Include="DB\Table\MemberDefParamModel.cs" />
+    <Compile Include="DB\Table\MemberModel.cs" />
+    <Compile Include="DB\Table\MetaModel.cs" />
+    <Compile Include="DB\Table\ParamModel.cs" />
+    <Compile Include="DB\Table\PathModel.cs" />
+    <Compile Include="DB\Table\RefIdModel.cs" />
+    <Compile Include="DB\Table\ReimplementsModel.cs" />
+    <Compile Include="DB\Table\XRefsModel.cs" />
+    <Compile Include="DTO\FileDto.cs" />
+    <Compile Include="DTO\FunctionDto.cs" />
+    <Compile Include="DTO\ParamDto.cs" />
+    <Compile Include="DTO\ParamDtoBase.cs" />
+    <Compile Include="DTO\VariableDto.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EntityFramework">
+      <Version>6.4.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Data.Sqlite">
+      <Version>8.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="SQLite">
+      <Version>3.13.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite">
+      <Version>1.0.118</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite.EF6">
+      <Version>1.0.118</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite.EF6.Migrations">
+      <Version>1.0.113</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

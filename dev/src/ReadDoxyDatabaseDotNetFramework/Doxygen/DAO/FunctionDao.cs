@@ -1,16 +1,8 @@
-﻿using Doxygen.DB;
-using Doxygen.DB.Table;
-using Doxygen.DTO;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using System.Collections;
+﻿using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Net.WebSockets;
-using System.Text;
-using System.Threading.Tasks;
+using Doxygen.DB;
+using Doxygen.DTO;
 
 namespace Doxygen.DAO
 {
