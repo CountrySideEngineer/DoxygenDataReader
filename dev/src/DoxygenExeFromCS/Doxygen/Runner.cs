@@ -6,16 +6,6 @@ namespace Doxygen
     public class Runner
     {
         /// <summary>
-        /// Path to doxygen executable file.
-        /// </summary>
-        public string Path { get; set; } = @"C:\Program Files\doxygen\bin\doxygen.exe";
-
-        /// <summary>
-        /// Path to doxygen configuration file, Doxyfile.
-        /// </summary>
-        public string Config { get; set; } = @"Doxyfile";
-
-        /// <summary>
         /// Default constructor.
         /// </summary>
         public Runner() { }
