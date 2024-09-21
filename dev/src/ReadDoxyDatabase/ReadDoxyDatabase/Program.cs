@@ -1,95 +1,84 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using Doxygen.DB;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Diagnostics.Contracts;
-using System.IO.Enumeration;
 using Doxygen.DAO;
 using Doxygen.DTO;
-using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 AFileDao dao = new CppSourceFileDao();
 var files = dao.GetAll();
 
-int index = 0;
-foreach (var item in files)
+foreach (var item in files.Select((value, index) => new { value, index }))
 {
-    var fileItem = (FileDto)item;
-    Console.WriteLine($"Index = {(index + 1), 3}");
-    Console.WriteLine($"\t  ID : {fileItem.Id, 3}");
-    Console.WriteLine($"\tNAME : {fileItem.Name}");
-    Console.WriteLine($"\tPATH : {fileItem.Path}");
+    var fileItem = (FileDto)item.value;
+	Console.WriteLine($"Index = {(item.index + 1),3}");
+	Console.WriteLine($"{"ID",12} : {fileItem.Id,3}");
+	Console.WriteLine($"{"FILE NAME",12} : {fileItem.Name}");
+	Console.WriteLine($"{"FILE PATH",12} : {fileItem.Path}");
 
     var funcDao = new FunctionByFileDao();
-    IEnumerable<ParamDtoBase> _funcs = funcDao.GetById(fileItem.Id);
-    foreach (var funcItem in _funcs)
-    {
-        Console.WriteLine($"\t\tName = {funcItem.Name}");
-    }
+	Console.WriteLine($"{"FUNCTION in THE FILE",24}");
+	IEnumerable<ParamDtoBase> _funcs = funcDao.GetById(fileItem.Id);
+	if (_funcs.Any())
+	{
+		foreach (var funcItem in _funcs.Select((value, index) => new { value, index }))
+		{
+			Console.WriteLine($"{(funcItem.index + 1),28} : {funcItem.value.Name}");
+		}
+	}
 
-    var globalVarDao = new GlobalVarialbeByFileDao();
+	var globalVarDao = new GlobalVarialbeByFileDao();
     IEnumerable<ParamDtoBase> _globalVars = globalVarDao.GetById(fileItem.Id);
-    foreach (var _globalVarItem in _globalVars)
-    {
-        Console.WriteLine($"\t\tName = {_globalVarItem.Name}");
-    }
-
-    index++;
-    
-
+	if (_globalVars.Any())
+	{
+		Console.WriteLine($"{"GLOBAL VAR in THE FILE",24}");
+		foreach (var _globalVarItem in _globalVars.Select((value, index) => new { value, index }))
+		{
+			Console.WriteLine($"{(_globalVarItem.index + 1),28} : {_globalVarItem.value.Name}");
+		}
+	}
 }
-Console.WriteLine();
-Console.WriteLine();
 
-index = 0;
 var functionDao = new FunctionDao();
 var functions = functionDao.GetAll();
-foreach (var item in functions)
+foreach (var item in functions.Select((value, index) => new {value, index}))
 {
-    var funcItem = (FunctionDto)item;
-    Console.WriteLine($"Index = {(index + 1), 3}");
-    Console.WriteLine($"\t   ID : {funcItem.Id, 3}");
-    Console.WriteLine($"\t TYPE : {funcItem.Type}");
-    Console.WriteLine($"\t NAME : {funcItem.Name}");
-    Console.WriteLine($"\tSCOPE : {funcItem.Scope}");
-    Console.WriteLine($"\tDEFIN : {funcItem.Definition}");
+    var funcItem = (FunctionDto)item.value;
+    Console.WriteLine($"Index = {(item.index + 1), 3}");
+	Console.WriteLine($"{"ID",12} : {funcItem.Id,3}");
+	Console.WriteLine($"{"TYPE",12} : {funcItem.Type}");
+	Console.WriteLine($"{"NAME",12} : {funcItem.Name}");
+	Console.WriteLine($"{"SCOPE",12} : {funcItem.Scope}");
+	Console.WriteLine($"{"DEFINE",12} : {funcItem.Definition}");
 
-    int argIndex = 0;
-    foreach (var argItem in funcItem.Arguments ?? new List<ParamDtoBase>())
-    {
-        Console.WriteLine($"\tArgIndex = {(argIndex + 1), 3}");
-        Console.WriteLine($"\t\tTYPE : {argItem.Type}");
-        Console.WriteLine($"\t\tNAME : {argItem.Name}");
-        argIndex++;
-    }
+	if ((null != funcItem.Arguments) && (funcItem.Arguments.Any()))
+	{
+		foreach (var argItem in funcItem.Arguments.Select((value, index) => new { value, index }))
+		{
+			Console.WriteLine($"{"ARGUMENT",24}{(argItem.index + 1)}");
+			Console.WriteLine($"{"TYPE",28} : {argItem.value.Type}");
+			Console.WriteLine($"{"NAME",28} : {argItem.value.Name}");
+		}
+	}
 
-    int subFuncIndex = 0;
-    foreach (var subFunc in funcItem.SubFunctions ?? new List<FunctionDto>())
-    {
-        Console.WriteLine($"\tSubFunc = {(subFuncIndex + 1), 3}");
-        Console.WriteLine($"\t\t   ID : {subFunc.Id, 3}");
-        Console.WriteLine($"\t\t TYPE : {subFunc.Type}");
-        Console.WriteLine($"\t\t NAME : {subFunc.Name}");
-        subFuncIndex++;
-    }
+	if ((null != funcItem.SubFunctions) && (funcItem.SubFunctions.Any()))
+	{
+		foreach (var subFunc in funcItem.SubFunctions.Select((value, index) => new {value, index}))
+		{
+			Console.WriteLine($"{"SUBFUNCTION",24}{(subFunc.index + 1)}");
+			Console.WriteLine($"{"ID",28} : {subFunc.value.Id,3}");
+			Console.WriteLine($"{"TYPE",28} : {subFunc.value.Type}");
+			Console.WriteLine($"{"NAME",28} : {subFunc.value.Name}");
+		}
+	}
 
-    int globalVarIndex = 0;
-    foreach (var glovalVar in funcItem.GlobalVariables ?? new List<ParamDtoBase>())
-    {
-        Console.WriteLine($"\tGlobal variable = {(globalVarIndex + 1), 3}");
-        Console.WriteLine($"\t\t   ID : {glovalVar.Id,3}");
-        Console.WriteLine($"\t\t TYPE : {glovalVar.Type}");
-        Console.WriteLine($"\t\t NAME : {glovalVar.Name}");
-        globalVarIndex++;
-    }
-
-
-
-    Console.WriteLine();
-
-    index++;
+	if ((null != funcItem.GlobalVariables) && (funcItem.GlobalVariables.Any()))
+	{
+		foreach (var glovalVar in funcItem.GlobalVariables.Select((value, index) => new { value, index })) 
+		{
+			Console.WriteLine($"{"Global variable",24}{(glovalVar.index + 1)}");
+			Console.WriteLine($"{"ID",28} : {glovalVar.value.Id,3}");
+			Console.WriteLine($"{"TYPE",28} : {glovalVar.value.Type}");
+			Console.WriteLine($"{"NAME",28} : {glovalVar.value.Name}");
+		}
+	}
 }
 
 return;
