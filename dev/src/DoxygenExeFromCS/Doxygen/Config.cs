@@ -64,13 +64,14 @@ namespace Doxygen
         /// </summary>
         /// <param name="configPath">Configuration file path.</param>
         /// <returns>Config object read from <paramref name="configPath"/>.</returns>
+        /// <exception cref="ArgumentException"></exception>
         protected static Config ReadConfig(string configPath)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Config));
             using Stream reader = new FileStream(configPath, FileMode.Open);
-            var config = serializer.Deserialize(reader) as Config;
+            var config = serializer.Deserialize(reader) ?? throw new ArgumentException();
 
-            return config;
+            return (Config)config;
         }
 
         /// <summary>
