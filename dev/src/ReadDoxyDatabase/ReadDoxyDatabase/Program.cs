@@ -87,4 +87,7 @@ foreach (var item in functions.Select((value, index) => new {value, index}))
 	}
 }
 
+Console.WriteLine();
+Console.WriteLine("- FUNCTIONS -");
+
 return;
